@@ -3,6 +3,8 @@ import { PropertyDraftPreview } from "@/components/property/forms/property-draft
 import { PropertyValidationPreview } from "@/components/property/forms/property-validation-preview";
 import { PropertyAutosaveStatus } from "@/components/property/forms/property-autosave-status";
 import { PropertyFormProvider } from "@/components/providers/property-form-provider";
+import { PropertyPublicationProgress } from "@/components/property/forms/property-publication-progress";
+import { PropertyPublicationTips } from "@/components/property/forms/property-publication-tips";
 
 export default function NewPropertyPage() {
   return (
@@ -28,6 +30,8 @@ export default function NewPropertyPage() {
           <div className="space-y-6">
             <PropertyDraftPreview />
             <PropertyValidationPreview />
+            <PropertyPublicationProgress />
+            <PropertyPublicationTips />
           </div>
         </div>
       </PropertyFormProvider>
