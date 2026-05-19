@@ -1,7 +1,6 @@
 "use client";
 
-"use client";
-
+import { usePropertyDraftPersistence } from "@/hooks/use-property-draft-persistence";
 import { useState } from "react";
 import { PropertyFormStepper } from "@/components/property/forms/property-form-stepper";
 import { FormStep } from "@/types/form.types";
@@ -47,6 +46,8 @@ export function PropertyForm() {
     updateDraft,
   } =
     usePropertyPublicationStore();
+  
+  usePropertyDraftPersistence();
 
   return (
     <div className="space-y-10">

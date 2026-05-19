@@ -1,6 +1,7 @@
 import { PropertyForm } from "@/components/property/forms/property-form";
 import { PropertyDraftPreview } from "@/components/property/forms/property-draft-preview";
 import { PropertyValidationPreview } from "@/components/property/forms/property-validation-preview";
+import { PropertyAutosaveStatus } from "@/components/property/forms/property-autosave-status";
 
 export default function NewPropertyPage() {
   return (
@@ -14,6 +15,9 @@ export default function NewPropertyPage() {
         <p className="mt-3 text-muted-foreground">
           Completa la información para publicar una nueva propiedad.
         </p>
+        <div className="mt-6">
+          <PropertyAutosaveStatus />
+        </div>
       </div>
 
       <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
