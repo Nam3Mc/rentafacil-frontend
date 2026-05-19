@@ -1,0 +1,50 @@
+[
+  {
+    "id": "property_1",
+    "title": "Apartamento moderno en Chapinero",
+    "description": "Apartamento amplio y moderno con excelente iluminación natural.",
+    "type": "apartment",
+    "status": "active",
+    "monthlyPrice": 3200000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 85,
+    "city": "Bogotá",
+    "state": "Cundinamarca",
+    "country": "Colombia",
+    "address": "Chapinero Alto",
+    "latitude": 4.6482837,
+    "longitude": -74.0628273,
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
+    ],
+    "ownerId": "user_1",
+    "isFeatured": true,
+    "createdAt": "2026-05-01T10:00:00.000Z",
+    "updatedAt": "2026-05-01T10:00:00.000Z"
+  },
+  {
+    "id": "property_2",
+    "title": "Casa familiar en Medellín",
+    "description": "Casa espaciosa ideal para familias.",
+    "type": "house",
+    "status": "active",
+    "monthlyPrice": 4800000,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "area": 180,
+    "city": "Medellín",
+    "state": "Antioquia",
+    "country": "Colombia",
+    "address": "El Poblado",
+    "latitude": 6.2087634,
+    "longitude": -75.5674312,
+    "images": [
+      "https://images.unsplash.com/photo-1494526585095-c41746248156"
+    ],
+    "ownerId": "user_1",
+    "isFeatured": false,
+    "createdAt": "2026-05-02T10:00:00.000Z",
+    "updatedAt": "2026-05-02T10:00:00.000Z"
+  }
+]
