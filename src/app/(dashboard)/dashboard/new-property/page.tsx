@@ -1,5 +1,6 @@
 import { PropertyForm } from "@/components/property/forms/property-form";
 import { PropertyDraftPreview } from "@/components/property/forms/property-draft-preview";
+import { PropertyValidationPreview } from "@/components/property/forms/property-validation-preview";
 
 export default function NewPropertyPage() {
   return (
@@ -20,9 +21,9 @@ export default function NewPropertyPage() {
         
         <div className="space-y-6">
           <PropertyDraftPreview />
+          <PropertyValidationPreview />
         </div>
       </div>
-
     </div>
   );
 }
