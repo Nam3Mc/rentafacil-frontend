@@ -1,4 +1,5 @@
 import { PropertyForm } from "@/components/property/forms/property-form";
+import { PropertyDraftPreview } from "@/components/property/forms/property-draft-preview";
 
 export default function NewPropertyPage() {
   return (
@@ -14,7 +15,14 @@ export default function NewPropertyPage() {
         </p>
       </div>
 
-      <PropertyForm />
+      <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
+        <PropertyForm />
+        
+        <div className="space-y-6">
+          <PropertyDraftPreview />
+        </div>
+      </div>
+
     </div>
   );
 }

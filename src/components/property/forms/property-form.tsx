@@ -7,6 +7,7 @@ import { PropertyFormStepper } from "@/components/property/forms/property-form-s
 import { FormStep } from "@/types/form.types";
 import { PropertyImageUpload } from "@/components/property/forms/property-image-upload";
 import { Button } from "@/components/ui/button";
+import { usePropertyPublicationStore } from "@/store/property-publication.store";
 
 const formSteps: FormStep[] = [
   {
@@ -41,6 +42,12 @@ export function PropertyForm() {
   const [currentStep, setCurrentStep] =
     useState(1); 
 
+  const {
+    draft,
+    updateDraft,
+  } =
+    usePropertyPublicationStore();
+
   return (
     <div className="space-y-10">
       
@@ -70,22 +77,35 @@ export function PropertyForm() {
                 <label className="text-sm font-medium">
                   Título
                 </label>
-        
+
                 <input
                   type="text"
                   placeholder="Apartamento moderno en Bogotá"
+                  value={draft.title}
+                  onChange={(event) =>
+                    updateDraft({
+                      title: event.target.value,
+                    })
+                  }
                   className="h-12 w-full rounded-2xl border border-border bg-background px-4 outline-none transition-all focus:border-primary"
                 />
+
               </div>
         
               <div className="space-y-2">
                 <label className="text-sm font-medium">
                   Descripción
                 </label>
-        
                 <textarea
                   placeholder="Describe la propiedad..."
                   rows={6}
+                  value={draft.description}
+                  onChange={(event) =>
+                    updateDraft({
+                      description:
+                        event.target.value,
+                    })
+                  }
                   className="w-full rounded-2xl border border-border bg-background px-4 py-4 outline-none transition-all focus:border-primary"
                 />
               </div>
@@ -134,17 +154,32 @@ export function PropertyForm() {
             </div>
         
             <div className="grid gap-6 md:grid-cols-2">
+
               <input
                 type="text"
                 placeholder="Ciudad"
+                value={draft.city}
+                onChange={(event) =>
+                  updateDraft({
+                    city: event.target.value,
+                  })
+                }
                 className="h-12 rounded-2xl border border-border bg-background px-4"
               />
   
               <input
                 type="text"
                 placeholder="Dirección"
+                value={draft.address}
+                onChange={(event) =>
+                  updateDraft({
+                    address:
+                      event.target.value,
+                  })
+                }
                 className="h-12 rounded-2xl border border-border bg-background px-4"
               />
+
             </div>
           </section>
         )}
