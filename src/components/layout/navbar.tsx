@@ -43,12 +43,14 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
 
+            <Link href="/login">
             <Button
               className="hidden md:inline-flex"
               size="lg"
             >
               Iniciar sesión
             </Button>
+            </Link>
 
             <Sheet>
               <SheetTrigger asChild>

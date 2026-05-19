@@ -13,11 +13,11 @@ export const propertyMock = {
     );
   },
 
-  async getById(
-    id: string
+  async getBySlug(
+    slug: string
   ): Promise<Property | undefined> {
     return properties.find(
-      (property) => property.id === id
+      (property) => property.slug === slug
     );
   },
 };

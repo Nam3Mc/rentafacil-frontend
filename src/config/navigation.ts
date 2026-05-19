@@ -15,4 +15,8 @@ export const navigationLinks = [
     label: "Publicar propiedad",
     href: "/become-owner",
   },
+  {
+    label: "Planes",
+    href: "/pricing",
+  },
 ];

@@ -1,6 +1,7 @@
 [
   {
     "id": "property_1",
+    "slug": "apartamento-moderno-en-chapinero",
     "title": "Apartamento moderno en Chapinero",
     "description": "Apartamento amplio y moderno con excelente iluminación natural.",
     "type": "apartment",
@@ -19,12 +20,30 @@
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
     ],
     "ownerId": "user_1",
+    "verificationStatus": "approved",
+    "verificationDocuments": [
+      {
+        "id": "document_1",
+        "type": "identity_document",
+        "fileName": "cedula.pdf",
+        "fileUrl": "/mock/documents/cedula.pdf",
+        "uploadedAt": "2026-05-01T10:00:00.000Z"
+      },
+      {
+        "id": "document_2",
+        "type": "utility_bill",
+        "fileName": "recibo-energia.pdf",
+        "fileUrl": "/mock/documents/recibo.pdf",
+        "uploadedAt": "2026-05-01T10:00:00.000Z"
+      }
+    ],
     "isFeatured": true,
     "createdAt": "2026-05-01T10:00:00.000Z",
     "updatedAt": "2026-05-01T10:00:00.000Z"
   },
   {
     "id": "property_2",
+    "slug": "casa-familiar-en-medellin",
     "title": "Casa familiar en Medellín",
     "description": "Casa espaciosa ideal para familias.",
     "type": "house",
@@ -43,6 +62,23 @@
       "https://images.unsplash.com/photo-1494526585095-c41746248156"
     ],
     "ownerId": "user_1",
+    "verificationStatus": "approved",
+    "verificationDocuments": [
+      {
+        "id": "document_1",
+        "type": "identity_document",
+        "fileName": "cedula.pdf",
+        "fileUrl": "/mock/documents/cedula.pdf",
+        "uploadedAt": "2026-05-01T10:00:00.000Z"
+      },
+      {
+        "id": "document_2",
+        "type": "utility_bill",
+        "fileName": "recibo-energia.pdf",
+        "fileUrl": "/mock/documents/recibo.pdf",
+        "uploadedAt": "2026-05-01T10:00:00.000Z"
+      }
+    ],
     "isFeatured": false,
     "createdAt": "2026-05-02T10:00:00.000Z",
     "updatedAt": "2026-05-02T10:00:00.000Z"

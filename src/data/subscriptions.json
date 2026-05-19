@@ -1,0 +1,38 @@
+[
+  {
+    "id": "plan_1",
+    "name": "Publicación única",
+    "type": "single_publication",
+    "description": "Publica una propiedad hasta que sea rentada.",
+    "price": 10,
+    "durationInDays": 30,
+    "allowsRelisting": false,
+    "maxProperties": 1,
+    "featuredListings": false,
+    "prioritySupport": false
+  },
+  {
+    "id": "plan_2",
+    "name": "Plan trimestral",
+    "type": "quarterly_pro",
+    "description": "Publica propiedades ilimitadas durante 3 meses.",
+    "price": 45,
+    "durationInDays": 90,
+    "allowsRelisting": true,
+    "maxProperties": null,
+    "featuredListings": true,
+    "prioritySupport": false
+  },
+  {
+    "id": "plan_3",
+    "name": "Plan anual",
+    "type": "annual_pro",
+    "description": "Máxima visibilidad y publicaciones activas durante todo el año.",
+    "price": 109,
+    "durationInDays": 365,
+    "allowsRelisting": true,
+    "maxProperties": null,
+    "featuredListings": true,
+    "prioritySupport": true
+  }
+]

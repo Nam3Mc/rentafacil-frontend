@@ -12,4 +12,8 @@ export const propertyService = {
   async getById(id: string) {
     return propertyMock.getById(id);
   },
+
+  async getBySlug(slug: string) {
+    return propertyMock.getBySlug(slug);
+  },
 };
