@@ -1,10 +1,9 @@
 "use client";
 
 import { useProperties } from "@/hooks/use-properties";
-
 import { Container } from "@/components/layout/container";
-
 import { PropertyCard } from "@/components/property/property-card";
+import { PropertyFilters } from "../property/property-filters";
 
 export function FeaturedProperties() {
   const { properties } = useProperties();
@@ -26,6 +25,8 @@ export function FeaturedProperties() {
             Explora propiedades verificadas y conecta directamente con propietarios de manera segura y transparente.
           </p>
         </div>
+
+        <PropertyFilters />
 
         <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-3">
           {properties.map((property) => (
