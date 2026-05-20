@@ -1,14 +1,14 @@
-import { AuthCard } from "@/components/auth/auth-card";
+import { AuthLayout } from "@/components/auth/auth-layout";
 
 import { RegisterForm } from "@/components/auth/register-form";
 
 export default function RegisterPage() {
   return (
-    <AuthCard
+    <AuthLayout
       title="Crear cuenta"
-      description="Regístrate para comenzar a explorar o publicar propiedades."
+      description="Publica propiedades, conecta con arrendatarios y administra tu cuenta."
     >
       <RegisterForm />
-    </AuthCard>
+    </AuthLayout>
   );
 }

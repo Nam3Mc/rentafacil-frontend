@@ -1,14 +1,14 @@
-import { AuthCard } from "@/components/auth/auth-card";
+import { AuthLayout } from "@/components/auth/auth-layout";
 
 import { LoginForm } from "@/components/auth/login-form";
 
 export default function LoginPage() {
   return (
-    <AuthCard
-      title="Bienvenido de nuevo"
-      description="Inicia sesión para administrar tus propiedades y solicitudes."
+    <AuthLayout
+      title="Iniciar sesión"
+      description="Accede a tu cuenta para administrar propiedades y solicitudes."
     >
       <LoginForm />
-    </AuthCard>
+    </AuthLayout>
   );
 }

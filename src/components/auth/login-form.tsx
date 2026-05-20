@@ -50,7 +50,7 @@ export function LoginForm() {
 
         <Button
           size="lg"
-          className="w-full rounded-2xl"
+          className="h-12 w-full rounded-2xl"
         >
           Iniciar sesión
         </Button>
