@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
+  <defs>
+    <!-- Gradient -->
+    <linearGradient id="purpleBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2140FF"/>
+      <stop offset="100%" stop-color="#7A1FFF"/>
+    </linearGradient>
+
+    <!-- Shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4"
+        flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Roof Symbol -->
+  <g transform="translate(270,90)" filter="url(#shadow)">
+    
+    <!-- Main Roof -->
+    <path
+      d="M0 120 L140 40 L280 120"
+      fill="none"
+      stroke="url(#purpleBlue)"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+    <!-- Chimney -->
+    <path
+      d="M60 95 L60 55 L88 55 L88 78"
+      fill="none"
+      stroke="url(#purpleBlue)"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+    <!-- Extended Roof Line -->
+    <path
+      d="M165 42 L360 150"
+      fill="none"
+      stroke="url(#purpleBlue)"
+      stroke-width="10"
+      stroke-linecap="round"/>
+  </g>
+
+  <!-- Company Name -->
+  <text
+    x="600"
+    y="320"
+    text-anchor="middle"
+    font-family="Montserrat, Arial, sans-serif"
+    font-size="110"
+    font-weight="500"
+    letter-spacing="3"
+    fill="url(#purpleBlue)">
+    RENTA FÁCIL
+  </text>
+</svg>

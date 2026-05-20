@@ -22,6 +22,10 @@ import { usePropertyPublicationStore } from "@/store/property-publication.store"
 
 interface PropertyFormProviderProps {
   children: React.ReactNode;
+
+  initialValues?: Partial<PropertyDraftSchema>;
+
+  mode?: "create" | "edit";
 }
 
 const PropertyFormContext =
@@ -33,11 +37,14 @@ const PropertyFormContext =
 
 export function PropertyFormProvider({
   children,
+  initialValues,
+  mode = "create",
 }: PropertyFormProviderProps) {
-  const draft =
-    usePropertyPublicationStore(
-      (state) => state.draft
-    );
+  const {
+    draft,
+    updateDraft,
+  } =
+    usePropertyPublicationStore();
 
   const methods =
     useForm<PropertyDraftSchema>({
@@ -46,49 +53,60 @@ export function PropertyFormProvider({
       ),
 
       defaultValues: {
-        title: "",
+        title:
+          initialValues?.title || "",
 
-        description: "",
+        description:
+          initialValues?.description ||
+          "",
 
-        city: "",
+        city:
+          initialValues?.city || "",
 
-        address: "",
+        address:
+          initialValues?.address || "",
 
-        monthlyPrice: 0,
+        monthlyPrice:
+          initialValues?.monthlyPrice ||
+          0,
 
-        bedrooms: 0,
+        bedrooms:
+          initialValues?.bedrooms || 0,
 
-        bathrooms: 0,
+        bathrooms:
+          initialValues?.bathrooms || 0,
 
-        area: 0,
+        area:
+          initialValues?.area || 0,
       },
 
       mode: "onChange",
     });
 
-  const { reset } = methods;
+  useEffect(() => {
+    if (
+      mode === "create" &&
+      draft.title
+    ) {
+      methods.reset(draft);
+    }
+  }, []);
 
   useEffect(() => {
-    reset({
-      title: draft.title,
+    if (mode !== "create") {
+      return;
+    }
 
-      description:
-        draft.description,
+    const subscription =
+      methods.watch((values) => {
+        updateDraft(
+          values as PropertyDraftSchema
+        );
+      });
 
-      city: draft.city,
-
-      address: draft.address,
-
-      monthlyPrice:
-        draft.monthlyPrice,
-
-      bedrooms: draft.bedrooms,
-
-      bathrooms: draft.bathrooms,
-
-      area: draft.area,
-    });
-  }, [draft, reset]);
+    return () =>
+      subscription.unsubscribe();
+  }, [methods, updateDraft, mode]);
 
   return (
     <PropertyFormContext.Provider

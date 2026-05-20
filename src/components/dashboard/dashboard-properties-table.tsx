@@ -106,9 +106,12 @@ export function DashboardPropertiesTable() {
                         <Eye className="size-4" />
                       </Link>
 
-                      <button className="rounded-2xl border border-border p-3 transition-all hover:bg-muted">
+                      <Link
+                        href={`/dashboard/properties/${property.id}/edit`}
+                        className="rounded-2xl border border-border p-3 transition-all hover:bg-muted"
+                      >
                         <Pencil className="size-4" />
-                      </button>
+                      </Link>
 
                       <button className="rounded-2xl border border-border p-3 transition-all hover:bg-muted">
                         <PauseCircle className="size-4" />

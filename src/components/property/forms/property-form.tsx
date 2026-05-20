@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { usePropertyPublicationStore } from "@/store/property-publication.store";
 import { TextField } from "@/components/forms/text-field";
 import { usePropertyForm } from "@/components/providers/property-form-provider";
+import Link from "next/link";
 
 const formSteps: FormStep[] = [
   {
@@ -38,7 +39,13 @@ const formSteps: FormStep[] = [
   },
 ];
 
-export function PropertyForm() {
+interface PropertyFormProps {
+    mode?: "create" | "edit";
+  }
+
+  export function PropertyForm({
+    mode = "create",
+  }: PropertyFormProps) {
 
   const [currentStep, setCurrentStep] =
     useState(1); 
@@ -77,6 +84,11 @@ export function PropertyForm() {
               <p className="mt-2 text-muted-foreground">
                 Describe las características principales de la propiedad.
               </p>
+              {mode === "edit" && (
+                <div className="mt-4 inline-flex rounded-full bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-600 dark:text-amber-400">
+                  Modo edición
+                </div>
+              )}
             </div>
         
             <div className="grid gap-6">
@@ -236,41 +248,26 @@ export function PropertyForm() {
         )}
   
         {/* Actions */}
-        <div className="flex items-center justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={currentStep === 1}
-            onClick={() =>
-              setCurrentStep((prev) =>
-                prev - 1
-              )
-            }
-            className="rounded-2xl"
-          >
-            Anterior
-          </Button>
-          
-          {currentStep < 5 ? (
-            <Button
-              type="button"
-              onClick={() =>
-                setCurrentStep((prev) =>
-                  prev + 1
-                )
-              }
-              className="rounded-2xl"
+        <div className="flex flex-col-reverse gap-4 pt-6 sm:flex-row sm:justify-end">
+              
+          {mode === "edit" && (
+            <Link
+              href="/dashboard/properties"
+              className="inline-flex h-14 items-center justify-center rounded-2xl border border-border px-6 font-medium transition-all hover:bg-muted"
             >
-              Continuar
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="rounded-2xl"
-            >
-              Publicar propiedad
-            </Button>
+              Cancelar
+            </Link>
           )}
+        
+          <Button
+            type="submit"
+            size="lg"
+            className="h-14 rounded-2xl px-8"
+          >
+            {mode === "edit"
+              ? "Guardar cambios"
+              : "Publicar propiedad"}
+          </Button>
         </div>
       </form>
     </div>

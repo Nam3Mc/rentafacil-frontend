@@ -25,7 +25,7 @@ export default function NewPropertyPage() {
 
       <PropertyFormProvider>
         <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
-          <PropertyForm />
+          <PropertyForm mode="create"/>
           
           <div className="space-y-6">
             <PropertyDraftPreview />
