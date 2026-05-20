@@ -1,11 +1,9 @@
 import Image from "next/image";
-
 import { Property } from "@/types/property.types";
-
 import { Container } from "@/components/layout/container";
-
 import { PropertyFeatures } from "@/components/property/property-features";
 import { PropertySidebar } from "@/components/property/property-sidebar";
+import { MapPin } from "lucide-react";
 
 interface PropertyDetailsSectionProps {
   property: Property;
@@ -18,43 +16,91 @@ export function PropertyDetailsSection({
     <section className="py-12 md:py-16">
       <Container>
         <div className="space-y-12">
-          
+
           {/* Header */}
-          <div className="space-y-5">
+          <div className="space-y-8">
+
+            {/* Badges */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex rounded-full bg-primary/10 px-4 py-1 text-sm font-medium capitalize text-primary">
-                {property.type}
-              </span>
+
+              <div className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+                Propiedad verificada
+              </div>
 
               {property.isFeatured && (
-                <span className="inline-flex rounded-full border border-border bg-card px-4 py-1 text-sm font-medium">
-                  Propiedad destacada
-                </span>
+                <div className="inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm font-medium">
+                  Destacada
+                </div>
               )}
             </div>
-
-            <div className="space-y-3">
-              <h1 className="font-heading text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                {property.title}
-              </h1>
-
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <span>
-                  {property.city}, {property.state}
-                </span>
+            
+            {/* Main Content */}
+            <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
+            
+              <div>
+                <h1 className="max-w-4xl font-heading text-5xl font-bold tracking-tight md:text-6xl">
+                  {property.title}
+                </h1>
+            
+                <div className="mt-5 flex items-center gap-2 text-lg text-muted-foreground">
+                  <MapPin className="size-5" />
+            
+                  <p>
+                    {property.city}, {property.state}
+                  </p>
+                </div>
+              </div>
+            
+              {/* Price Card */}
+              <div className="rounded-[2rem] border border-border bg-card p-6">
+                <p className="text-sm text-muted-foreground">
+                  Precio mensual
+                </p>
+            
+                <p className="mt-2 text-5xl font-bold tracking-tight">
+                  $
+                  {property.monthlyPrice.toLocaleString(
+                    "es-CO"
+                  )}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Main Image */}
-          <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border border-border bg-muted">
-            <Image
-              src={property.images[0]}
-              alt={property.title}
-              fill
-              priority
-              className="object-cover"
-            />
+          {/* Gallery */}
+          <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
+                          
+            {/* Main Image */}
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-border bg-muted">
+              <Image
+                src={property.images[0]}
+                alt={property.title}
+                fill
+                priority
+                className="object-cover"
+              />
+          
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            </div>
+                          
+            {/* Secondary Images */}
+            <div className="grid gap-4">
+              {property.images
+                .slice(1, 3)
+                .map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-border bg-muted"
+                  >
+                    <Image
+                      src={image}
+                      alt={property.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
 
           {/* Content */}

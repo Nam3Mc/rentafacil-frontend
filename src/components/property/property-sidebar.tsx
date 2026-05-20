@@ -10,44 +10,47 @@ export function PropertySidebar({
   property,
 }: PropertySidebarProps) {
   return (
-    <aside className="sticky top-24 h-fit rounded-3xl border border-border bg-card p-6 shadow-sm">
-      <div className="space-y-2">
-        <p className="text-4xl font-bold tracking-tight">
-          ${property.monthlyPrice.toLocaleString("es-CO")}
+    <aside className="sticky top-24 h-fit overflow-hidden rounded-[2rem] border border-border bg-card">
+    
+      {/* Price */}
+      <div className="border-b border-border p-8">
+        <p className="text-sm text-muted-foreground">
+          Precio mensual
         </p>
-
-        <p className="text-muted-foreground">
+  
+        <p className="mt-3 text-5xl font-bold tracking-tight">
+          $
+          {property.monthlyPrice.toLocaleString(
+            "es-CO"
+          )}
+        </p>
+        
+        <p className="mt-2 text-muted-foreground">
           Mensuales
         </p>
       </div>
-      
-      <div className="mt-4 inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-        Propiedad verificada
-      </div>
-
-      <div className="mt-8 space-y-3">
-        <Button
-          size="lg"
-          className="w-full rounded-2xl"
-        >
+        
+      {/* Actions */}
+      <div className="space-y-6 p-8">
+        
+        <button className="w-full rounded-2xl bg-primary px-6 py-4 font-medium text-primary-foreground transition-all duration-300 hover:opacity-90">
           Solicitar arriendo
-        </Button>
-
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full rounded-2xl"
-        >
-          Guardar propiedad
-        </Button>
-      </div>
-
-      <div className="mt-8 rounded-2xl bg-muted p-4">
-        <p className="text-sm text-muted-foreground">
-          Esta propiedad fue verificada por
-          Renta Fácil para brindar mayor
-          seguridad y confianza.
-        </p>
+        </button>
+        
+        <button className="w-full rounded-2xl border border-border px-6 py-4 font-medium transition-all hover:bg-muted">
+          Contactar propietario
+        </button>
+        
+        {/* Trust */}
+        <div className="rounded-2xl bg-muted p-5">
+          <p className="font-medium">
+            Propiedad validada
+          </p>
+        
+          <p className="mt-2 text-sm leading-7 text-muted-foreground">
+            Los documentos de esta propiedad fueron verificados por nuestro equipo.
+          </p>
+        </div>
       </div>
     </aside>
   );

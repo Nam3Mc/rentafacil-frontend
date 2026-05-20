@@ -53,14 +53,16 @@ export function Navbar() {
             </Link>
 
             <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="md:hidden"
-                >
-                  <Menu className="size-5" />
-                </Button>
+              <SheetTrigger>
+                <div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden"
+                    >
+                    <Menu className="size-5" />
+                  </Button>
+                </div>
               </SheetTrigger>
 
               <SheetContent
