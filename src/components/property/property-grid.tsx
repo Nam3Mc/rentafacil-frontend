@@ -10,7 +10,7 @@ export function PropertyGrid({
   properties,
 }: PropertyGridProps) {
   return (
-    <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-10 sm:grid-cols-2 xl:grid-cols-3">
       {properties.map((property) => (
         <PropertyCard
           key={property.id}
