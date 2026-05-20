@@ -5,6 +5,8 @@ import { PropertyAutosaveStatus } from "@/components/property/forms/property-aut
 import { PropertyFormProvider } from "@/components/providers/property-form-provider";
 import { PropertyPublicationProgress } from "@/components/property/forms/property-publication-progress";
 import { PropertyPublicationTips } from "@/components/property/forms/property-publication-tips";
+import { PropertyPublicationSummary } from "@/components/property/property-publication-summary";
+import { PropertyQualityScore } from "@/components/property/forms/property-quality-score";
 
 export default function NewPropertyPage() {
   return (
@@ -22,19 +24,27 @@ export default function NewPropertyPage() {
           <PropertyAutosaveStatus />
         </div>
       </div>
-
-      <PropertyFormProvider>
-        <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
-          <PropertyForm mode="create"/>
+        <PropertyFormProvider>
+          <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
+            
+            <PropertyForm mode="create" />
           
-          <div className="space-y-6">
-            <PropertyDraftPreview />
-            <PropertyValidationPreview />
-            <PropertyPublicationProgress />
-            <PropertyPublicationTips />
+            <div className="space-y-6 xl:sticky xl:top-24 xl:h-fit">
+              
+              <PropertyDraftPreview />
+
+              <PropertyPublicationSummary />
+          
+              <PropertyQualityScore />
+          
+              <PropertyValidationPreview />
+          
+              <PropertyPublicationProgress />
+          
+              <PropertyPublicationTips />
+            </div>
           </div>
-        </div>
-      </PropertyFormProvider>
+        </PropertyFormProvider>
     </div>
   );
 }

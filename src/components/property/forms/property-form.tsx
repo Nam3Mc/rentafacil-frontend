@@ -1,15 +1,40 @@
 "use client";
 
-import { usePropertyDraftPersistence } from "@/hooks/use-property-draft-persistence";
 import { useState } from "react";
-import { PropertyFormStepper } from "@/components/property/forms/property-form-stepper";
-import { FormStep } from "@/types/form.types";
-import { PropertyImageUpload } from "@/components/property/forms/property-image-upload";
-import { Button } from "@/components/ui/button";
-import { usePropertyPublicationStore } from "@/store/property-publication.store";
-import { TextField } from "@/components/forms/text-field";
-import { usePropertyForm } from "@/components/providers/property-form-provider";
+
 import Link from "next/link";
+
+import { useRouter } from "next/navigation";
+
+import { Loader2 } from "lucide-react";
+
+import { usePropertyDraftPersistence } from "@/hooks/use-property-draft-persistence";
+
+import { PropertyFormStepper } from "@/components/property/forms/property-form-stepper";
+
+import { PropertyImageUpload } from "@/components/property/forms/property-image-upload";
+
+import { PropertyPublicationSuccess } from "@/components/property/forms/property-publication-success";
+
+import { TextField } from "@/components/forms/text-field";
+
+import { Button } from "@/components/ui/button";
+
+import { usePropertyPublicationStore } from "@/store/property-publication.store";
+
+import { usePropertySubmissionStore } from "@/store/property-submission.store";
+
+import { usePropertyForm } from "@/components/providers/property-form-provider";
+
+import { FormStep } from "@/types/form.types";
+
+import { PropertyVerificationCard } from "@/components/property/forms/property-verification-card";
+
+import { PropertyVerificationUpload } from "@/components/property/forms/property-verification-upload";
+
+import { PropertyVerificationTimeline } from "@/components/property/forms/property-verification-timeline";
+
+import { PropertyVerificationBenefits } from "@/components/property/forms/property-verification-benefits";
 
 const formSteps: FormStep[] = [
   {
@@ -40,15 +65,25 @@ const formSteps: FormStep[] = [
 ];
 
 interface PropertyFormProps {
-    mode?: "create" | "edit";
-  }
+  mode?: "create" | "edit";
+}
 
-  export function PropertyForm({
-    mode = "create",
-  }: PropertyFormProps) {
+export function PropertyForm({
+  mode = "create",
+}: PropertyFormProps) {
+
+  const router = useRouter();
+
+  const {
+    isSubmitting,
+    isSuccess,
+    setSubmitting,
+    setSuccess,
+  } =
+    usePropertySubmissionStore();
 
   const [currentStep, setCurrentStep] =
-    useState(1); 
+    useState(1);
 
   const {
     draft,
@@ -62,35 +97,95 @@ interface PropertyFormProps {
 
   usePropertyDraftPersistence();
 
+  const onSubmit = async () => {
+
+    setSubmitting(true);
+
+    await new Promise(
+      (resolve) =>
+        setTimeout(resolve, 2000)
+    );
+
+    setSubmitting(false);
+
+    setSuccess(true);
+
+    setTimeout(() => {
+      router.push(
+        "/dashboard/properties"
+      );
+    }, 1500);
+  };
+
+  if (isSuccess) {
+    return (
+      <PropertyPublicationSuccess />
+    );
+  }
+
   return (
     <div className="space-y-10">
-      
+
       {/* Stepper */}
       <PropertyFormStepper
         steps={formSteps}
         currentStep={currentStep}
       />
-  
-      <form className="space-y-10">
+
+      <div className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4">
         
+        <div>
+          <p className="text-sm text-muted-foreground">
+            Paso actual
+          </p>
+        
+          <p className="font-semibold">
+            {currentStep} de {formSteps.length}
+          </p>
+        </div>
+        
+        <div className="text-right">
+          <p className="text-sm text-muted-foreground">
+            Sección
+          </p>
+        
+          <p className="font-semibold">
+            {formSteps[currentStep - 1]?.title}
+          </p>
+        </div>
+      </div>
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+
+          onSubmit();
+        }}
+        className="space-y-10"
+      >
+
         {/* Step 1 */}
         {currentStep === 1 && (
           <section className="rounded-3xl border border-border bg-card p-8">
+
             <div className="mb-8">
+
               <h2 className="font-heading text-2xl font-bold">
                 Información general
               </h2>
-        
+
               <p className="mt-2 text-muted-foreground">
                 Describe las características principales de la propiedad.
               </p>
+
               {mode === "edit" && (
                 <div className="mt-4 inline-flex rounded-full bg-amber-500/10 px-4 py-2 text-sm font-medium text-amber-600 dark:text-amber-400">
                   Modo edición
                 </div>
               )}
+
             </div>
-        
+
             <div className="grid gap-6">
 
               <TextField
@@ -106,6 +201,7 @@ interface PropertyFormProps {
               />
 
               <div className="space-y-2">
+
                 <label className="text-sm font-medium">
                   Descripción
                 </label>
@@ -132,54 +228,65 @@ interface PropertyFormProps {
                     {errors.description.message}
                   </p>
                 )}
+
               </div>
 
             </div>
+
           </section>
         )}
-  
+
         {/* Step 2 */}
         {currentStep === 2 && (
           <section className="rounded-3xl border border-border bg-card p-8">
+
             <div className="mb-8">
+
               <h2 className="font-heading text-2xl font-bold">
                 Características
               </h2>
+
             </div>
-        
+
             <div className="grid gap-6 md:grid-cols-3">
+
               <input
                 type="number"
                 placeholder="Habitaciones"
                 className="h-12 rounded-2xl border border-border bg-background px-4"
               />
-  
+
               <input
                 type="number"
                 placeholder="Baños"
                 className="h-12 rounded-2xl border border-border bg-background px-4"
               />
-  
+
               <input
                 type="number"
                 placeholder="Área"
                 className="h-12 rounded-2xl border border-border bg-background px-4"
               />
+
             </div>
+
           </section>
         )}
 
         {/* Step 3 */}
         {currentStep === 3 && (
           <section className="rounded-3xl border border-border bg-card p-8">
+
             <div className="mb-8">
+
               <h2 className="font-heading text-2xl font-bold">
                 Ubicación
               </h2>
+
             </div>
-        
+
             <div className="grid gap-6 md:grid-cols-2">
-        
+
               <TextField
                 label="Ciudad"
                 placeholder="Bogotá"
@@ -206,71 +313,166 @@ interface PropertyFormProps {
               />
 
             </div>
+
           </section>
         )}
-  
+
         {/* Step 4 */}
         {currentStep === 4 && (
           <section className="rounded-3xl border border-border bg-card p-8">
+
             <div className="mb-8">
+
               <h2 className="font-heading text-2xl font-bold">
                 Fotografías
               </h2>
+
             </div>
-        
+
             <PropertyImageUpload />
+
           </section>
         )}
-  
+
         {/* Step 5 */}
         {currentStep === 5 && (
           <section className="rounded-3xl border border-border bg-card p-8">
+
             <div className="mb-8">
+
               <h2 className="font-heading text-2xl font-bold">
                 Verificación
               </h2>
-        
+
               <p className="mt-2 text-muted-foreground">
                 Validaremos la autenticidad de la propiedad antes de publicarla.
               </p>
+
             </div>
-        
-            <div className="space-y-8">
-              <div className="rounded-3xl border-2 border-dashed border-border bg-muted p-10 text-center">
-                Documento de identidad
-              </div>
-        
-              <div className="rounded-3xl border-2 border-dashed border-border bg-muted p-10 text-center">
-                Documento de pertenencia
-              </div>
+
+            <div className="space-y-6">
+                    
+              <PropertyVerificationCard
+                title="Documento de identidad"
+                description="Sube un documento oficial del propietario para validar identidad."
+                status="pending"
+              />
+            
+              <PropertyVerificationUpload
+                title="Subir documento de identidad"
+              />
+            
+              <PropertyVerificationCard
+                title="Documento de pertenencia"
+                description="Recibo público, escritura o documento legal que demuestre propiedad."
+                status="unverified"
+              />
+            
+              <PropertyVerificationUpload
+                title="Subir documento de propiedad"
+              />
+            
+              <PropertyVerificationCard
+                title="Poder legal (opcional)"
+                description="Requerido si la propiedad es administrada por un tercero."
+                status="unverified"
+              />
+            
+              <PropertyVerificationUpload
+                title="Subir poder legal"
+              />
+            
             </div>
+
           </section>
         )}
-  
-        {/* Actions */}
-        <div className="flex flex-col-reverse gap-4 pt-6 sm:flex-row sm:justify-end">
-              
-          {mode === "edit" && (
-            <Link
-              href="/dashboard/properties"
-              className="inline-flex h-14 items-center justify-center rounded-2xl border border-border px-6 font-medium transition-all hover:bg-muted"
-            >
-              Cancelar
-            </Link>
-          )}
-        
-          <Button
-            type="submit"
-            size="lg"
-            className="h-14 rounded-2xl px-8"
-          >
-            {mode === "edit"
-              ? "Guardar cambios"
-              : "Publicar propiedad"}
-          </Button>
+
+        <div className="mt-10">
+          <PropertyVerificationTimeline />
         </div>
+
+        <div className="mt-10">
+          <PropertyVerificationBenefits />
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col gap-4 pt-6">
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between">
+
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              disabled={currentStep === 1}
+              onClick={() =>
+                setCurrentStep(
+                  (prev) => prev - 1
+                )
+              }
+              className="h-14 rounded-2xl px-8"
+            >
+              Anterior
+            </Button>
+            
+            {currentStep < formSteps.length ? (
+              <Button
+                type="button"
+                size="lg"
+                onClick={() =>
+                  setCurrentStep(
+                    (prev) => prev + 1
+                  )
+                }
+                className="h-14 rounded-2xl px-8"
+              >
+                Continuar
+              </Button>
+            ) : (
+              <div className="flex flex-col-reverse gap-4 sm:flex-row">
+              
+                {mode === "edit" && (
+                  <Link
+                    href="/dashboard/properties"
+                    className="inline-flex h-14 items-center justify-center rounded-2xl border border-border px-6 font-medium transition-all hover:bg-muted"
+                  >
+                    Cancelar
+                  </Link>
+                )}
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSubmitting}
+                  className="h-14 rounded-2xl px-8"
+                >
+                
+                  {isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="size-4 animate-spin" />
+                  
+                      Procesando...
+                    </div>
+                  ) : isSuccess ? (
+                    "Publicación completada"
+                  ) : mode === "edit" ? (
+                    "Guardar cambios"
+                  ) : (
+                    "Publicar propiedad"
+                  )}
+
+                </Button>
+                
+              </div>
+            )}
+
+          </div>
+          
+        </div>
+
       </form>
+
     </div>
   );
-  
 }
