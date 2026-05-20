@@ -9,7 +9,7 @@ export function DashboardHeader() {
           Panel de propietario
         </div>
 
-        <h1 className="mt-6 font-heading text-5xl font-bold tracking-tight">
+        <h1 className="mt-6 font-heading text-4xl sm:text-5xl font-bold tracking-tight">
           Dashboard
         </h1>
 
@@ -20,7 +20,7 @@ export function DashboardHeader() {
 
       <Link
         href="/dashboard/new-property"
-        className="inline-flex h-14 items-center justify-center rounded-2xl bg-primary px-8 font-medium text-primary-foreground transition-all hover:opacity-90"
+        className="inline-flex h-12 sm:h-14 items-center justify-center rounded-2xl bg-primary px-8 font-medium text-primary-foreground transition-all hover:opacity-90"
       >
         Publicar propiedad
       </Link>

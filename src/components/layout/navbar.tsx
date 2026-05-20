@@ -18,7 +18,7 @@ import {
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link
@@ -33,7 +33,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-2xl px-4 py-4 text-lg font-medium transition-all hover:bg-muted"
               >
                 {link.label}
               </Link>
@@ -67,7 +67,7 @@ export function Navbar() {
 
               <SheetContent
                 side="right"
-                className="border-border bg-background"
+                className="w-[85%] border-l border-border bg-background"
               >
                 <div className="mt-10 flex flex-col gap-6">
                   {navigationLinks.map((link) => (

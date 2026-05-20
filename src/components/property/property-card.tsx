@@ -52,7 +52,7 @@ export function PropertyCard({
 
           {/* Price */}
           <div className="absolute bottom-4 left-4">
-            <p className="text-3xl font-bold tracking-tight text-white">
+            <p className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
               $
               {property.monthlyPrice.toLocaleString(
                 "es-CO"
@@ -66,11 +66,11 @@ export function PropertyCard({
         </div>
 
         {/* Content */}
-        <div className="space-y-6 p-6">
+        <div className="space-y-5 p-5 sm:p-6">
           
           {/* Header */}
           <div>
-            <h3 className="font-heading text-2xl font-bold tracking-tight transition-colors group-hover:text-primary">
+            <h3 className="font-heading text-xl sm:text-2xl font-bold tracking-tight transition-colors group-hover:text-primary">
               {property.title}
             </h3>
 

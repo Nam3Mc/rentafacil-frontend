@@ -10,7 +10,7 @@ export function HeroSection() {
             Plataforma moderna para renta de propiedades
           </span>
 
-          <h1 className="font-heading text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="font-heading text-5xl font-bold tracking-tight text-5xl sm:text-6xl lg:text-7xl">
             Encuentra tu próximo hogar de forma simple y segura
           </h1>
 
