@@ -39,10 +39,13 @@ export function PropertyCard({
             </div>
           )}
 
-          <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-12">
+          <div className="absolute right-4 top-4 z-20">
             <PropertyFavoriteButton
               propertyId={property.id}
             />
+          </div>
+
+          <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-2">
             <PropertyStatusBadge
               status={property.status}
             />

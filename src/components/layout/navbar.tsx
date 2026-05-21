@@ -59,12 +59,12 @@ export function Navbar() {
                     variant="ghost"
                     size="icon"
                     className="md:hidden"
-                    >
+                  >
                     <Menu className="size-5" />
                   </Button>
                 </div>
               </SheetTrigger>
-
+                      
               <SheetContent
                 side="right"
                 className="w-[85%] border-l border-border bg-background"
@@ -79,7 +79,7 @@ export function Navbar() {
                       {link.label}
                     </Link>
                   ))}
-
+            
                   <Button
                     size="lg"
                     className="mt-4"
@@ -89,6 +89,7 @@ export function Navbar() {
                 </div>
               </SheetContent>
             </Sheet>
+
           </div>
         </div>
       </Container>

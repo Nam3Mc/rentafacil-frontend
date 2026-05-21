@@ -1,0 +1,23 @@
+[
+  {
+    "id": "activity_1",
+    "type": "lead",
+    "title": "Nuevo lead recibido",
+    "description": "Carlos Ramírez mostró interés en tu propiedad.",
+    "createdAt": "2026-05-21"
+  },
+  {
+    "id": "activity_2",
+    "type": "favorite",
+    "title": "Nueva propiedad guardada",
+    "description": "Una propiedad fue agregada a favoritos.",
+    "createdAt": "2026-05-20"
+  },
+  {
+    "id": "activity_3",
+    "type": "verification",
+    "title": "Propiedad verificada",
+    "description": "Tu propiedad fue aprobada exitosamente.",
+    "createdAt": "2026-05-18"
+  }
+]

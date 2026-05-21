@@ -1,0 +1,16 @@
+[
+  {
+    "propertyId": "property_1",
+    "views": 324,
+    "leads": 18,
+    "favorites": 44,
+    "conversionRate": 5.5
+  },
+  {
+    "propertyId": "property_2",
+    "views": 182,
+    "leads": 9,
+    "favorites": 21,
+    "conversionRate": 4.9
+  }
+]

@@ -1,44 +1,45 @@
 [
-  { "id": "property_1",
-  "slug": "apartamento-moderno-en-chapinero",
-  "title": "Apartamento moderno en Chapinero",
-  "description": "Apartamento amplio y moderno con excelente iluminación natural.",
-  "type": "apartment",
-  "status": "active",
-  "monthlyPrice": 3200000,
-  "bedrooms": 2,
-  "bathrooms": 2,
-  "area": 85,
-  "city": "Bogotá",
-  "state": "Cundinamarca",
-  "country": "Colombia",
-  "address": "Chapinero Alto",
-  "latitude": 4.6482837,
-  "longitude": -74.0628273,
-  "images": [
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
-  ],
-  "ownerId": "user_1",
-  "verificationStatus": "approved",
-  "verificationDocuments": [
-  {
-  "id": "document_1",
-  "type": "identity_document",
-  "fileName": "cedula.pdf",
-  "fileUrl": "/mock/documents/cedula.pdf",
-  "uploadedAt": "2026-05-01T10:00:00.000Z"
-  },
-  {
-  "id": "document_2",
-  "type": "utility_bill",
-  "fileName": "recibo-energia.pdf",
-  "fileUrl": "/mock/documents/recibo.pdf",
-  "uploadedAt": "2026-05-01T10:00:00.000Z"
-  }
-  ],
-  "isFeatured": true,
-  "createdAt": "2026-05-01T10:00:00.000Z",
-  "updatedAt": "2026-05-01T10:00:00.000Z"
+  { 
+    "id": "property_1",
+    "slug": "apartamento-moderno-en-chapinero",
+    "title": "Apartamento moderno en Chapinero",
+    "description": "Apartamento amplio y moderno con excelente iluminación natural.",
+    "type": "apartment",
+    "status": "active",
+    "monthlyPrice": 3200000,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "area": 85,
+    "city": "Bogotá",
+    "state": "Cundinamarca",
+    "country": "Colombia",
+    "address": "Chapinero Alto",
+    "latitude": 4.6482837,
+    "longitude": -74.0628273,
+    "images": [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
+    ],
+    "ownerId": "user_1",
+    "verificationStatus": "approved",
+    "verificationDocuments": [
+      {
+        "id": "document_1",
+        "type": "identity_document",
+        "fileName": "cedula.pdf",
+        "fileUrl": "/mock/documents/cedula.pdf",
+        "uploadedAt": "2026-05-01T10:00:00.000Z"
+      },
+      {
+        "id": "document_2",
+        "type": "utility_bill",
+        "fileName": "recibo-energia.pdf",
+        "fileUrl": "/mock/documents/recibo.pdf",
+        "uploadedAt": "2026-05-01T10:00:00.000Z"
+      }
+    ],
+    "isFeatured": true,
+    "createdAt": "2026-05-01T10:00:00.000Z",
+    "updatedAt": "2026-05-01T10:00:00.000Z"
   },
   { "id": "property_2",
   "slug": "casa-familiar-en-medellin",

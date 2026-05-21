@@ -4,7 +4,8 @@ import { DashboardStats } from "@/components/dashboard/dashboard-stats";
 import { DashboardLeadsSection } from "@/components/dashboard/dashboard-leads-section";
 import { DashboardConversationsSection } from "@/components/dashboard/dashboard-conversations-section";
 import { DashboardProfileCard } from "@/components/dashboard/dashboard-profile-card";
-
+import { DashboardPerformanceSection } from "@/components/dashboard/dashboard-performance-section";
+import { DashboardActivitySection } from "@/components/dashboard/dashboard-activity-section";
 
 export default function DashboardPage() {
   return (
@@ -16,6 +17,8 @@ export default function DashboardPage() {
           <DashboardStats />
           <DashboardLeadsSection />
           <DashboardConversationsSection />
+          <DashboardPerformanceSection />
+          <DashboardActivitySection />
         </div>
       </Container>
     </section>
