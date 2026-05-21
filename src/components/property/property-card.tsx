@@ -1,14 +1,7 @@
 import Image from "next/image";
-
 import Link from "next/link";
-
-import {
-  Bath,
-  BedDouble,
-  MapPin,
-  Maximize,
-} from "lucide-react";
-
+import { PropertyFavoriteButton } from "@/components/property/property-favorite-button";
+import { Bath, BedDouble, MapPin, Maximize, } from "lucide-react";
 import { Property } from "@/types/property.types";
 
 interface PropertyCardProps {
@@ -27,7 +20,13 @@ export function PropertyCard({
         
         {/* Image */}
         <div className="relative aspect-[16/10] overflow-hidden">
-          
+
+          <div className="absolute bottom-4 right-4 z-10">
+            <PropertyFavoriteButton
+              propertyId={property.id}
+            />
+          </div>
+
           <Image
             src={property.images[0]}
             alt={property.title}
