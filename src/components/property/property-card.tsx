@@ -3,6 +3,8 @@ import Link from "next/link";
 import { PropertyFavoriteButton } from "@/components/property/property-favorite-button";
 import { Bath, BedDouble, MapPin, Maximize, } from "lucide-react";
 import { Property } from "@/types/property.types";
+import { PropertyStatusBadge } from "@/components/property/property-status-badge";
+import { PropertyVerificationBadge } from "@/components/property/property-verification-badge";
 
 interface PropertyCardProps {
   property: Property;
@@ -20,13 +22,6 @@ export function PropertyCard({
         
         {/* Image */}
         <div className="relative aspect-[16/10] overflow-hidden">
-
-          <div className="absolute bottom-4 right-4 z-10">
-            <PropertyFavoriteButton
-              propertyId={property.id}
-            />
-          </div>
-
           <Image
             src={property.images[0]}
             alt={property.title}
@@ -44,9 +39,18 @@ export function PropertyCard({
             </div>
           )}
 
-          {/* Verification Badge */}
-          <div className="absolute right-4 top-4 rounded-full bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md">
-            Verificada
+          <div className="absolute bottom-4 right-4 z-10 flex flex-col items-end gap-12">
+            <PropertyFavoriteButton
+              propertyId={property.id}
+            />
+            <PropertyStatusBadge
+              status={property.status}
+            />
+            <PropertyVerificationBadge
+              status={
+                property.verificationStatus
+              }
+            />
           </div>
 
           {/* Price */}

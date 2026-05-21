@@ -5,7 +5,10 @@ export type PropertyStatus =
   | "paused"
   | "rented"
   | "expired"
-  | "rejected";
+  | "rejected"
+  | "draft"
+  | "published"
+  | "archived";
 
 export type PropertyVerificationStatus =
   | "unverified"
