@@ -9,11 +9,16 @@ import { useDropzone } from "react-dropzone";
 import { ImagePlus, Star } from "lucide-react";
 
 import { UploadedMedia } from "@/types/media.types";
+import { useEffect } from "react";
+
+import { usePropertyPublicationStore } from "@/store/property-publication.store";
 
 export function PropertyImageUpload() {
   const [images, setImages] = useState<
     UploadedMedia[]
   >([]);
+
+const { updateDraft,} = usePropertyPublicationStore();
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -61,6 +66,23 @@ export function PropertyImageUpload() {
       }))
     );
   }
+
+  useEffect(() => {
+  
+    updateDraft({
+    
+      images:
+        images.map(
+          (image) =>
+            image.preview
+        ),
+      
+    });
+  
+  }, [
+    images,
+    updateDraft,
+  ]);
 
   return (
     <div className="space-y-8">

@@ -16,6 +16,7 @@
     "firstName": "María",
     "lastName": "Gómez",
     "email": "maria@example.com",
+    "password": "123456",
     "avatarUrl": "https://i.pravatar.cc/300?img=2",
     "role": "guest",
     "isVerified": true,

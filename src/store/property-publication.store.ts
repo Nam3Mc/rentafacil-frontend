@@ -13,6 +13,11 @@ interface PropertyPublicationState {
 }
 
 const initialDraft: PropertyDraft = {
+
+  id: "",
+
+  slug: "",
+
   title: "",
 
   description: "",

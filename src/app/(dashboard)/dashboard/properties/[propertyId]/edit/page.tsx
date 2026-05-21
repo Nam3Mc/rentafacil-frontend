@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 
-import properties from "@/data/properties.json";
-
+import { propertyService } from "@/services/property.service";
 import { Container } from "@/components/layout/container";
 
 import { PropertyFormProvider } from "@/components/providers/property-form-provider";
@@ -17,13 +16,13 @@ interface EditPropertyPageProps {
 export default async function EditPropertyPage({
   params,
 }: EditPropertyPageProps) {
+  
   const { propertyId } =
     await params;
 
   const property =
-    properties.find(
-      (item) =>
-        item.id === propertyId
+    await propertyService.getById(
+      propertyId
     );
 
   if (!property) {

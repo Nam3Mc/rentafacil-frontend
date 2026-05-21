@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { useAuthStore } from "@/store/auth.store";
+import { Logo } from "../shared/logo";
 
 const guestLinks = [
   {
@@ -84,8 +85,12 @@ const adminLinks = [
 ];
 
 export function DashboardSidebar() {
-  const { role } = useAuthStore();
+  const { user } =
+    useAuthStore();
 
+  const role =
+    user?.role || "guest";
+    
   const links =
     role === "guest"
       ? guestLinks
@@ -102,7 +107,7 @@ export function DashboardSidebar() {
           href="/"
           className="font-heading text-2xl font-bold tracking-tight"
         >
-          Renta Fácil
+          <Logo compact/>
         </Link>
       </div>
 

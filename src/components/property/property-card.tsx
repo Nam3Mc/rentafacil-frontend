@@ -23,7 +23,10 @@ export function PropertyCard({
         {/* Image */}
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
-            src={property.images[0]}
+            src={
+              property.images?.[0] ||
+              "/images/property-placeholder.jpg"
+            }
             alt={property.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"

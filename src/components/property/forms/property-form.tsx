@@ -1,40 +1,26 @@
 "use client";
 
 import { useState } from "react";
-
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
-
 import { Loader2 } from "lucide-react";
-
 import { usePropertyDraftPersistence } from "@/hooks/use-property-draft-persistence";
-
 import { PropertyFormStepper } from "@/components/property/forms/property-form-stepper";
-
 import { PropertyImageUpload } from "@/components/property/forms/property-image-upload";
-
 import { PropertyPublicationSuccess } from "@/components/property/forms/property-publication-success";
-
 import { TextField } from "@/components/forms/text-field";
-
 import { Button } from "@/components/ui/button";
-
 import { usePropertyPublicationStore } from "@/store/property-publication.store";
-
 import { usePropertySubmissionStore } from "@/store/property-submission.store";
-
 import { usePropertyForm } from "@/components/providers/property-form-provider";
-
 import { FormStep } from "@/types/form.types";
-
 import { PropertyVerificationCard } from "@/components/property/forms/property-verification-card";
-
 import { PropertyVerificationUpload } from "@/components/property/forms/property-verification-upload";
-
 import { PropertyVerificationTimeline } from "@/components/property/forms/property-verification-timeline";
-
 import { PropertyVerificationBenefits } from "@/components/property/forms/property-verification-benefits";
+import { propertyService } from "@/services/property.service";
+import { useAuthStore } from "@/store/auth.store";
+import { Property } from "@/types/property.types";
 
 const formSteps: FormStep[] = [
   {
@@ -74,6 +60,9 @@ export function PropertyForm({
 
   const router = useRouter();
 
+  const { user } =
+    useAuthStore();
+
   const {
     isSubmitting,
     isSuccess,
@@ -88,6 +77,7 @@ export function PropertyForm({
   const {
     draft,
     updateDraft,
+    resetDraft,
   } =
     usePropertyPublicationStore();
 
@@ -97,24 +87,137 @@ export function PropertyForm({
 
   usePropertyDraftPersistence();
 
+
   const onSubmit = async () => {
-
-    setSubmitting(true);
-
-    await new Promise(
-      (resolve) =>
-        setTimeout(resolve, 2000)
-    );
-
-    setSubmitting(false);
-
-    setSuccess(true);
-
-    setTimeout(() => {
-      router.push(
-        "/dashboard/properties"
-      );
-    }, 1500);
+  
+    if (!user) {
+      return;
+    }
+  
+    try {
+    
+      setSubmitting(true);
+    
+      const newProperty: Property = {
+      
+        id:
+          mode === "edit"
+            ? draft.id || ""
+            : `property_${Date.now()}`,
+      
+        slug:
+          mode === "edit"
+          ? draft.slug || ""
+              : draft.title
+                  .toLowerCase()
+                  .replaceAll(" ", "-"),
+      
+        title:
+          draft.title,
+      
+        description:
+          draft.description,
+      
+        type:
+          draft.type || "apartment",
+      
+        status:
+          "pending_verification",
+      
+        monthlyPrice:
+          Number(
+            draft.monthlyPrice
+          ),
+        
+        bedrooms:
+          Number(
+            draft.bedrooms
+          ),
+        
+        bathrooms:
+          Number(
+            draft.bathrooms
+          ),
+        
+        area:
+          Number(
+            draft.area
+          ),
+        
+        city:
+          draft.city,
+        
+        state:
+          "Cundinamarca",
+        
+        country:
+          "Colombia",
+        
+        address:
+          draft.address,
+        
+        latitude: 0,
+        
+        longitude: 0,
+        
+        images:
+          draft.images || [],
+        
+        ownerId:
+          user.id,
+        
+        verificationStatus:
+          "pending_review",
+        
+        verificationDocuments:
+          [],
+        
+        isFeatured:
+          false,
+        
+        createdAt:
+          new Date().toISOString(),
+        
+        updatedAt:
+          new Date().toISOString(),
+      };
+    
+      if (mode === "edit") {
+      
+        await propertyService.update(
+          newProperty
+        );
+      
+      } else {
+      
+        await propertyService.create(
+          newProperty
+        );
+      
+      }
+    
+      setSubmitting(false);
+    
+      setSuccess(true);
+    
+      resetDraft();
+    
+      setTimeout(() => {
+      
+        router.push(
+          "/dashboard/properties"
+        );
+      
+      }, 1500);
+    
+    } catch (error) {
+    
+      console.error(error);
+    
+      setSubmitting(false);
+    
+    }
+  
   };
 
   if (isSuccess) {

@@ -1,21 +1,54 @@
 "use client";
 
 import Link from "next/link";
-
-import {
-  Eye,
-  Pencil,
-  PauseCircle,
-} from "lucide-react";
-
-import { useProperties } from "@/hooks/use-properties";
-
+import { Eye, Pencil, PauseCircle,} from "lucide-react";
 import { PropertyStatusBadge } from "@/components/property/property-status-badge";
+import { useOwnerProperties } from "@/hooks/use-owner-properties";
+import { Trash2 } from "lucide-react";
+import { propertyService } from "@/services/property.service";
 
 export function DashboardPropertiesTable() {
-  const { properties } =
-    useProperties();
 
+  const { properties, isLoading, } = useOwnerProperties();
+
+  async function handleDelete(
+  propertyId: string
+) {
+
+  const confirmed =
+    window.confirm(
+      "¿Eliminar esta propiedad?"
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+
+    await propertyService.delete(
+      propertyId
+    );
+
+    window.location.reload();
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+}
+  
+  if (isLoading) {
+
+    return (
+      <div className="rounded-[2rem] border border-border bg-card p-10 text-center text-muted-foreground">
+
+        Cargando propiedades...
+
+      </div>
+    );
+  }
   return (
     <div className="overflow-hidden rounded-[2rem] border border-border bg-card">
       
@@ -98,6 +131,19 @@ export function DashboardPropertiesTable() {
 
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-3">
+
+                      <button
+                        onClick={() =>
+                          handleDelete(
+                            property.id
+                          )
+                        }
+                        className="rounded-2xl border border-border p-3 text-red-500 transition-all hover:bg-red-500/10"
+                      >
+                      
+                        <Trash2 className="size-4" />
+                      
+                      </button>
                       
                       <Link
                         href={`/properties/${property.slug}`}
