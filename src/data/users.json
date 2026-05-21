@@ -4,6 +4,7 @@
     "firstName": "Carlos",
     "lastName": "Ramírez",
     "email": "carlos@example.com",
+    "password": "123456",
     "avatarUrl": "https://i.pravatar.cc/300?img=1",
     "role": "owner",
     "isVerified": true,

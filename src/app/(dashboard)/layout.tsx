@@ -1,3 +1,6 @@
+"use client";
+
+import { useAuthGuard } from "@/hooks/use-auth-guard";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
 
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
@@ -9,6 +12,12 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
+  const { user } =
+    useAuthGuard();
+  
+  if (!user) {
+    return null;
+  }
   return (
     <div className="flex min-h-screen bg-muted/30">
       

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <defs>
+    <!-- Gradient -->
+    <linearGradient id="roofGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0F5BFF"/>
+      <stop offset="100%" stop-color="#9A2EFF"/>
+    </linearGradient>
+
+    <!-- Soft Shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Roof Group -->
+  <g filter="url(#shadow)">
+    
+    <!-- Main Roof -->
+    <path 
+      d="M285 300 
+         L530 110 
+         Q540 102 550 110
+         L795 300
+         L725 300
+         L540 155
+         L355 300 Z"
+      fill="url(#roofGradient)"
+    />
+
+    <!-- Chimney -->
+    <rect x="390" y="150" width="45" height="80" fill="#1D4FFF"/>
+
+    <!-- Secondary Roof -->
+    <path 
+      d="M620 160 
+         L950 300
+         L875 300
+         L675 210 Z"
+      fill="url(#roofGradient)"
+      opacity="0.95"
+    />
+  </g>
+
+  <!-- Brand Name -->
+  <g font-family="Montserrat, Arial, sans-serif" letter-spacing="10">
+
+    <!-- RENTA -->
+    <text 
+      x="210" 
+      y="470" 
+      font-size="90" 
+      font-weight="700"
+      fill="url(#roofGradient)">
+      RENTA
+    </text>
+
+    <!-- FÁCIL -->
+    <text 
+      x="650" 
+      y="470" 
+      font-size="90" 
+      font-weight="300"
+      fill="#1F2937">
+      FÁCIL
+    </text>
+  </g>
+
+  <!-- Tagline -->
+  <g stroke="#1F2937" stroke-width="2" opacity="0.85">
+    <line x1="20" y1="560" x2="250" y2="560"/>
+    <line x1="940" y1="560" x2="1170" y2="560"/>
+  </g>
+
+  <text 
+    x="600" 
+    y="575"
+    text-anchor="middle"
+    font-family="Montserrat, Arial, sans-serif"
+    font-size="24"
+    letter-spacing="6"
+    fill="#1F2937">
+    TU HOGAR, SIN COMPLICACIONES
+  </text>
+
+</svg>

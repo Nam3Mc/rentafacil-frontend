@@ -1,35 +1,113 @@
+import Image from "next/image";
+import Link from "next/link";
+
+import { ArrowRight } from "lucide-react";
+
 import { Container } from "@/components/layout/container";
-import { CTAButton } from "@/components/shared/cta-button";
+
+import { Button } from "@/components/ui/button";
+
+import { Logo } from "@/components/shared/logo";
 
 export function HeroSection() {
+
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
+    <section className="relative overflow-hidden">
+
+      {/* Background Image */}
+      <div className="absolute inset-0">
+
+        <Image
+          src="/images/hero-background.png"
+          alt="Modern apartments"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+
+      </div>
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-background/75" />
+
+      {/* Gradient Glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background/40 to-background/80" />
+
+      {/* Content */}
       <Container>
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="mb-6 inline-flex rounded-full border border-border bg-muted px-4 py-1 text-sm text-muted-foreground">
-            Plataforma moderna para renta de propiedades
-          </span>
 
-          <h1 className="font-heading text-5xl font-bold tracking-tight text-5xl sm:text-6xl lg:text-7xl">
-            Encuentra tu próximo hogar de forma simple y segura
-          </h1>
+        <div className="relative flex min-h-[92vh] items-center py-20">
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
-            Renta Fácil conecta propietarios e inquilinos mediante una experiencia moderna,
-            contratos digitales y tecnología segura.
-          </p>
+          <div className="max-w-4xl">
 
-          <div className="mt-10 flex items-center justify-center gap-4">
-           <CTAButton>
-             Explorar propiedades
-           </CTAButton>
+            {/* Logo */}
+            <div className="mb-10">
 
-            <button className="rounded-xl border border-border bg-background px-6 py-3 font-medium transition-all duration-300 hover:bg-accent">
-              Publicar propiedad
-            </button>
+              <Logo />
+
+            </div>
+
+            {/* Heading */}
+            <h1 className="max-w-4xl font-heading text-5xl font-bold tracking-tight md:text-7xl">
+
+              Administra propiedades
+
+              <span className="bg-gradient-to-r from-[#0F5BFF] to-[#9A2EFF] bg-clip-text text-transparent">
+
+                {" "}sin complicaciones
+
+              </span>
+
+            </h1>
+
+            {/* Description */}
+            <p className="mt-8 max-w-2xl text-lg leading-8 text-muted-foreground md:text-xl">
+
+              Publica propiedades, recibe leads, administra mensajes y haz crecer tu negocio inmobiliario desde una experiencia moderna y profesional.
+
+            </p>
+
+            {/* Actions */}
+            <div className="mt-12 flex flex-col gap-4 sm:flex-row">
+
+              <Link href="/register">
+
+                <Button
+                  size="lg"
+                  className="h-14 rounded-2xl px-8 text-base"
+                >
+
+                  Publicar propiedad
+
+                  <ArrowRight className="ml-2 size-5" />
+
+                </Button>
+
+              </Link>
+
+              <Link href="/properties">
+
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-14 rounded-2xl border-border/60 bg-background/70 px-8 text-base backdrop-blur"
+                >
+
+                  Explorar marketplace
+
+                </Button>
+
+              </Link>
+
+            </div>
+
           </div>
+
         </div>
+
       </Container>
+
     </section>
   );
 }

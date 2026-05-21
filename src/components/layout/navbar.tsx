@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { Menu } from "lucide-react";
-
+import { Logo } from "@/components/shared/logo";
 import { navigationLinks } from "@/config/navigation";
 
 import { Container } from "@/components/layout/container";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
-
+import { useAuthStore } from "@/store/auth.store";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -17,6 +17,11 @@ import {
 } from "@/components/ui/sheet";
 
 export function Navbar() {
+  const {
+    user,
+    logout,
+  } =
+    useAuthStore();
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <Container>
@@ -25,7 +30,7 @@ export function Navbar() {
             href="/"
             className="font-heading text-xl font-semibold tracking-tight"
           >
-            Renta Fácil
+            < Logo compact/> 
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -43,14 +48,44 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
 
+          {user ? (
+          
+            <div className="hidden items-center gap-3 md:flex">
+            
+              <Link href="/dashboard">
+          
+                <Button
+                  variant="outline"
+                  size="lg"
+                >
+                  Dashboard
+                </Button>
+          
+              </Link>
+          
+              <Button
+                size="lg"
+                onClick={logout}
+              >
+                Cerrar sesión
+              </Button>
+          
+            </div>
+          
+          ) : (
+          
             <Link href="/login">
-            <Button
-              className="hidden md:inline-flex"
-              size="lg"
-            >
-              Iniciar sesión
-            </Button>
+            
+              <Button
+                className="hidden md:inline-flex"
+                size="lg"
+              >
+                Iniciar sesión
+              </Button>
+          
             </Link>
+          
+          )}
 
             <Sheet>
               <SheetTrigger>

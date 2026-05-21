@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { Logo } from "../shared/logo";
+
 interface AuthLayoutProps {
   title: string;
 
@@ -14,17 +16,16 @@ export function AuthLayout({
   children,
 }: AuthLayoutProps) {
   return (
-    <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="relative grid min-h-screen overflow-hidden lg:grid-cols-2">
+      {/* Background Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(15,91,255,0.10),transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(154,46,255,0.10),transparent_30%)]" />
       
       {/* Left Side */}
-      <div className="hidden border-r border-border bg-muted/40 lg:flex lg:flex-col lg:justify-between lg:p-12">
+      <div className="relative hidden border-r border-border bg-background/70 backdrop-blur-xl lg:flex lg:flex-col lg:justify-between lg:p-12">
         
         {/* Logo */}
-        <Link
-          href="/"
-          className="font-heading text-3xl font-bold tracking-tight"
-        >
-          RentaFacil
+        <Link href="/" >
+          <Logo compact />
         </Link>
 
         {/* Content */}
@@ -50,16 +51,18 @@ export function AuthLayout({
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center justify-center p-6 md:p-12">
+      <div className="relative flex items-center justify-center p-6 md:p-12">
         
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md rounded-[2rem] border border-border bg-card/80 p-8 shadow-2xl backdrop-blur-xl">
           
           {/* Mobile Logo */}
           <Link
             href="/"
-            className="mb-10 block font-heading text-3xl font-bold tracking-tight lg:hidden"
+            className="mb-10 block lg:hidden"
           >
-            RentaFacil
+            
+            <Logo compact />
+            
           </Link>
 
           {/* Header */}

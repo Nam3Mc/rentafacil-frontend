@@ -1,39 +1,42 @@
 import { create } from "zustand";
 
-import { UserRole } from "@/types/user.types";
+import { persist } from "zustand/middleware";
 
-interface AuthState {
-  isAuthenticated: boolean;
+import { User } from "@/types/user.types";
 
-  role: UserRole;
+interface AuthStore {
 
-  setRole: (
-    role: UserRole
-  ) => void;
+  user: User | null;
 
-  login: () => void;
+  setUser:
+    (user: User | null) => void;
 
-  logout: () => void;
+  logout:
+    () => void;
 }
 
 export const useAuthStore =
-  create<AuthState>((set) => ({
-    isAuthenticated: true,
+  create<AuthStore>()(
 
-    role: "owner",
+    persist(
 
-    setRole: (role) =>
-      set({
-        role,
+      (set) => ({
+
+        user: null,
+
+        setUser: (user) =>
+          set({ user }),
+
+        logout: () =>
+          set({ user: null }),
+
       }),
 
-    login: () =>
-      set({
-        isAuthenticated: true,
-      }),
+      {
+        name:
+          "rentafacil-auth",
+      }
 
-    logout: () =>
-      set({
-        isAuthenticated: false,
-      }),
-  }));
+    )
+
+  );
