@@ -32,6 +32,8 @@ export function PropertyFilters() {
     selectedType,
     setSearch,
     setSelectedType,
+    sortBy,
+    setSortBy,
   } = usePropertyFilterStore();
 
   return (
@@ -96,6 +98,44 @@ export function PropertyFilters() {
               </button>
             );
           })}
+        </div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                
+          <div>
+            <p className="text-sm font-medium">
+              Ordenar propiedades
+            </p>
+                
+            <p className="mt-1 text-sm text-muted-foreground">
+              Controla cómo deseas explorar propiedades.
+            </p>
+          </div>
+                
+          <select
+            value={sortBy}
+            onChange={(event) =>
+              setSortBy(
+                event.target.value as
+                  | "newest"
+                  | "price_asc"
+                  | "price_desc"
+              )
+            }
+            className="h-12 rounded-2xl border border-border bg-background px-4 outline-none transition-all focus:border-primary"
+          >
+            <option value="newest">
+              Más recientes
+            </option>
+          
+            <option value="price_asc">
+              Precio menor
+            </option>
+          
+            <option value="price_desc">
+              Precio mayor
+            </option>
+          </select>
+          
         </div>
       </div>
     </div>

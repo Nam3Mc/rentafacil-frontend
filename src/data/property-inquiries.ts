@@ -1,0 +1,55 @@
+import { PropertyInquiry } from "@/types/property-inquiry.types";
+
+export const propertyInquiries: PropertyInquiry[] =
+  [
+    {
+      id: "1",
+
+      propertyId: "property_1",
+
+      name: "Carlos Mendoza",
+
+      email:
+        "carlos@email.com",
+
+      message:
+        "Estoy interesado en visitar la propiedad este fin de semana.",
+
+      createdAt:
+        "2026-05-21",
+    },
+
+    {
+      id: "2",
+
+      propertyId: "property_2",
+
+      name: "Laura Gómez",
+
+      email:
+        "laura@email.com",
+
+      message:
+        "¿La propiedad acepta mascotas?",
+
+      createdAt:
+        "2026-05-20",
+    },
+
+    {
+      id: "3",
+
+      propertyId: "property_1",
+
+      name: "Andrés Ruiz",
+
+      email:
+        "andres@email.com",
+
+      message:
+        "Quisiera conocer condiciones del contrato.",
+
+      createdAt:
+        "2026-05-18",
+    },
+  ];

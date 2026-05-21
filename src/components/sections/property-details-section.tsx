@@ -1,9 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import { Property } from "@/types/property.types";
 import { Container } from "@/components/layout/container";
 import { PropertyFeatures } from "@/components/property/property-features";
 import { PropertySidebar } from "@/components/property/property-sidebar";
 import { MapPin } from "lucide-react";
+import { useEffect } from "react";
+import { usePropertyRecentlyViewedStore } from "@/store/property-recently-viewed.store";
+import { RecommendedPropertiesSection } from "@/components/sections/recommended-properties-section";
+import { PropertyAnalyticsCard } from "@/components/dashboard/property-analytics-card";
 
 interface PropertyDetailsSectionProps {
   property: Property;
@@ -11,7 +17,33 @@ interface PropertyDetailsSectionProps {
 
 export function PropertyDetailsSection({
   property,
+  
 }: PropertyDetailsSectionProps) {
+
+  const { addRecentlyViewed } =
+      usePropertyRecentlyViewedStore();
+  
+    useEffect(() => {
+      addRecentlyViewed(
+        property.id
+      );
+    }, [
+      property.id,
+      addRecentlyViewed,
+    ]);
+
+  const analytics = {
+    propertyId: property.id,
+  
+    views: 248,
+  
+    favorites: 32,
+  
+    contacts: 12,
+  
+    conversionRate: 8.3,
+  };
+
   return (
     <section className="py-12 md:py-16">
       <Container>
@@ -159,10 +191,24 @@ export function PropertyDetailsSection({
             </div>
 
             {/* Sidebar */}
-            <PropertySidebar property={property} />
+            <div className="space-y-8">
+                          
+              <PropertySidebar
+                property={property}
+              />
+            
+              <PropertyAnalyticsCard
+                analytics={analytics}
+              />
+            
+            </div>
           </div>
         </div>
       </Container>
+      <RecommendedPropertiesSection
+        property={property}
+      />
     </section>
+
   );
 }

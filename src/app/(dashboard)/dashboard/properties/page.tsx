@@ -4,6 +4,8 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
 import { DashboardPropertiesTable } from "@/components/dashboard/dashboard-properties-table";
 
+import { PropertyFavoritesCounter } from "@/components/property/property-favorites-counter";
+
 export default function DashboardPropertiesPage() {
   return (
     <section className="py-12 md:py-16">

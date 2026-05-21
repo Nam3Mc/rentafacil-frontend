@@ -1,86 +1,253 @@
 [
+  { "id": "property_1",
+  "slug": "apartamento-moderno-en-chapinero",
+  "title": "Apartamento moderno en Chapinero",
+  "description": "Apartamento amplio y moderno con excelente iluminación natural.",
+  "type": "apartment",
+  "status": "active",
+  "monthlyPrice": 3200000,
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "area": 85,
+  "city": "Bogotá",
+  "state": "Cundinamarca",
+  "country": "Colombia",
+  "address": "Chapinero Alto",
+  "latitude": 4.6482837,
+  "longitude": -74.0628273,
+  "images": [
+  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
+  ],
+  "ownerId": "user_1",
+  "verificationStatus": "approved",
+  "verificationDocuments": [
   {
-    "id": "property_1",
-    "slug": "apartamento-moderno-en-chapinero",
-    "title": "Apartamento moderno en Chapinero",
-    "description": "Apartamento amplio y moderno con excelente iluminación natural.",
-    "type": "apartment",
-    "status": "active",
-    "monthlyPrice": 3200000,
-    "bedrooms": 2,
-    "bathrooms": 2,
-    "area": 85,
-    "city": "Bogotá",
-    "state": "Cundinamarca",
-    "country": "Colombia",
-    "address": "Chapinero Alto",
-    "latitude": 4.6482837,
-    "longitude": -74.0628273,
-    "images": [
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
-    ],
-    "ownerId": "user_1",
-    "verificationStatus": "approved",
-    "verificationDocuments": [
-      {
-        "id": "document_1",
-        "type": "identity_document",
-        "fileName": "cedula.pdf",
-        "fileUrl": "/mock/documents/cedula.pdf",
-        "uploadedAt": "2026-05-01T10:00:00.000Z"
-      },
-      {
-        "id": "document_2",
-        "type": "utility_bill",
-        "fileName": "recibo-energia.pdf",
-        "fileUrl": "/mock/documents/recibo.pdf",
-        "uploadedAt": "2026-05-01T10:00:00.000Z"
-      }
-    ],
-    "isFeatured": true,
-    "createdAt": "2026-05-01T10:00:00.000Z",
-    "updatedAt": "2026-05-01T10:00:00.000Z"
+  "id": "document_1",
+  "type": "identity_document",
+  "fileName": "cedula.pdf",
+  "fileUrl": "/mock/documents/cedula.pdf",
+  "uploadedAt": "2026-05-01T10:00:00.000Z"
   },
   {
-    "id": "property_2",
-    "slug": "casa-familiar-en-medellin",
-    "title": "Casa familiar en Medellín",
-    "description": "Casa espaciosa ideal para familias.",
-    "type": "house",
-    "status": "active",
-    "monthlyPrice": 4800000,
-    "bedrooms": 4,
-    "bathrooms": 3,
-    "area": 180,
-    "city": "Medellín",
-    "state": "Antioquia",
-    "country": "Colombia",
-    "address": "El Poblado",
-    "latitude": 6.2087634,
-    "longitude": -75.5674312,
-    "images": [
-      "https://images.unsplash.com/photo-1494526585095-c41746248156"
-    ],
-    "ownerId": "user_1",
-    "verificationStatus": "approved",
-    "verificationDocuments": [
-      {
-        "id": "document_1",
-        "type": "identity_document",
-        "fileName": "cedula.pdf",
-        "fileUrl": "/mock/documents/cedula.pdf",
-        "uploadedAt": "2026-05-01T10:00:00.000Z"
-      },
-      {
-        "id": "document_2",
-        "type": "utility_bill",
-        "fileName": "recibo-energia.pdf",
-        "fileUrl": "/mock/documents/recibo.pdf",
-        "uploadedAt": "2026-05-01T10:00:00.000Z"
-      }
-    ],
-    "isFeatured": false,
-    "createdAt": "2026-05-02T10:00:00.000Z",
-    "updatedAt": "2026-05-02T10:00:00.000Z"
+  "id": "document_2",
+  "type": "utility_bill",
+  "fileName": "recibo-energia.pdf",
+  "fileUrl": "/mock/documents/recibo.pdf",
+  "uploadedAt": "2026-05-01T10:00:00.000Z"
   }
+  ],
+  "isFeatured": true,
+  "createdAt": "2026-05-01T10:00:00.000Z",
+  "updatedAt": "2026-05-01T10:00:00.000Z"
+  },
+  { "id": "property_2",
+  "slug": "casa-familiar-en-medellin",
+  "title": "Casa familiar en Medellín",
+  "description": "Casa espaciosa ideal para familias.",
+  "type": "house",
+  "status": "active",
+  "monthlyPrice": 4800000,
+  "bedrooms": 4,
+  "bathrooms": 3,
+  "area": 180,
+  "city": "Medellín",
+  "state": "Antioquia",
+  "country": "Colombia",
+  "address": "El Poblado",
+  "latitude": 6.2087634,
+  "longitude": -75.5674312,
+  "images": [
+  "https://images.unsplash.com/photo-1494526585095-c41746248156"
+  ],
+  "ownerId": "user_1",
+  "verificationStatus": "approved",
+  "verificationDocuments": [
+  {
+  "id": "document_1",
+  "type": "identity_document",
+  "fileName": "cedula.pdf",
+  "fileUrl": "/mock/documents/cedula.pdf",
+  "uploadedAt": "2026-05-01T10:00:00.000Z"
+  },
+  {
+  "id": "document_2",
+  "type": "utility_bill",
+  "fileName": "recibo-energia.pdf",
+  "fileUrl": "/mock/documents/recibo.pdf",
+  "uploadedAt": "2026-05-01T10:00:00.000Z"
+  }
+  ],
+  "isFeatured": false,
+  "createdAt": "2026-05-02T10:00:00.000Z",
+  "updatedAt": "2026-05-02T10:00:00.000Z"
+  },
+  { "id": "property_3",
+  "slug": "estudio-loft-en-la-candelaria",
+  "title": "Estudio loft en La Candelaria",
+  "description": "Loft acogedor ideal para estudiantes o profesionales, cerca de transporte público.",
+  "type": "studio",
+  "status": "active",
+  "monthlyPrice": 1800000,
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "area": 40,
+  "city": "Bogotá",
+  "state": "Cundinamarca",
+  "country": "Colombia",
+  "address": "La Candelaria",
+  "latitude": 4.5980556,
+  "longitude": -74.0758333,
+  "images": [
+  "https://images.unsplash.com/photo-1505691723518-36a3b69a3b9f"
+  ],
+  "ownerId": "user_2",
+  "verificationStatus": "pending",
+  "verificationDocuments": [],
+  "isFeatured": false,
+  "createdAt": "2026-05-05T09:30:00.000Z",
+  "updatedAt": "2026-05-05T09:30:00.000Z"
+  },
+  { "id": "property_4",
+  "slug": "apartamento-familiar-en-barranquilla",
+  "title": "Apartamento familiar en Barranquilla",
+  "description": "Apartamento en edificio con ascensor, zona segura y cercana a centros comerciales.",
+  "type": "apartment",
+  "status": "active",
+  "monthlyPrice": 2100000,
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "area": 110,
+  "city": "Barranquilla",
+  "state": "Atlántico",
+  "country": "Colombia",
+  "address": "Alto Prado",
+  "latitude": 10.980000,
+  "longitude": -74.788888,
+  "images": [
+  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
+  ],
+  "ownerId": "user_3",
+  "verificationStatus": "approved",
+  "verificationDocuments": [
+  {
+  "id": "document_3",
+  "type": "identity_document",
+  "fileName": "cedula_user3.pdf",
+  "fileUrl": "/mock/documents/cedula_user3.pdf",
+  "uploadedAt": "2026-05-06T11:00:00.000Z"
+  }
+  ],
+  "isFeatured": false,
+  "createdAt": "2026-05-06T11:00:00.000Z",
+  "updatedAt": "2026-05-06T11:00:00.000Z"
+  },
+  { "id": "property_5",
+  "slug": "casa-de-campo-en-villa-de-leyva",
+  "title": "Casa de campo en Villa de Leyva",
+  "description": "Hermosa casa de campo con jardín y vista a los cerros, perfecta para fines de semana.",
+  "type": "house",
+  "status": "active",
+  "monthlyPrice": 2500000,
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "area": 200,
+  "city": "Villa de Leyva",
+  "state": "Boyacá",
+  "country": "Colombia",
+  "address": "Vereda Las Mesas",
+  "latitude": 5.632222,
+  "longitude": -73.526111,
+  "images": [
+  "https://images.unsplash.com/photo-1505691723518-36a3b69a3b9f"
+  ],
+  "ownerId": "user_4",
+  "verificationStatus": "approved",
+  "verificationDocuments": [
+  {
+  "id": "document_4",
+  "type": "property_title",
+  "fileName": "escrituras.pdf",
+  "fileUrl": "/mock/documents/escrituras.pdf",
+  "uploadedAt": "2026-05-07T08:20:00.000Z"
+  }
+  ],
+  "isFeatured": true,
+  "createdAt": "2026-05-07T08:20:00.000Z",
+  "updatedAt": "2026-05-07T08:20:00.000Z"
+  },
+  { "id": "property_6",
+  "slug": "apartamento-lujo-en-cartagena",
+  "title": "Apartamento de lujo en Cartagena",
+  "description": "Apartamento frente al mar con balcón y acabados de alta gama.",
+  "type": "apartment",
+  "status": "active",
+  "monthlyPrice": 7200000,
+  "bedrooms": 3,
+  "bathrooms": 3,
+  "area": 140,
+  "city": "Cartagena",
+  "state": "Bolívar",
+  "country": "Colombia",
+  "address": "Bocagrande",
+  "latitude": 10.391048,
+  "longitude": -75.479426,
+  "images": [
+  "https://images.unsplash.com/photo-1505691723518-36a3b69a3b9f"
+  ],
+  "ownerId": "user_5",
+  "verificationStatus": "approved",
+  "verificationDocuments": [
+  {
+  "id": "document_5",
+  "type": "identity_document",
+  "fileName": "cedula_user5.pdf",
+  "fileUrl": "/mock/documents/cedula_user5.pdf",
+  "uploadedAt": "2026-05-08T14:00:00.000Z"
+  },
+  {
+  "id": "document_6",
+  "type": "utility_bill",
+  "fileName": "recibo_agua.pdf",
+  "fileUrl": "/mock/documents/recibo_agua.pdf",
+  "uploadedAt": "2026-05-08T14:00:00.000Z"
+  }
+  ],
+  "isFeatured": true,
+  "createdAt": "2026-05-08T14:00:00.000Z",
+  "updatedAt": "2026-05-08T14:00:00.000Z"
+  },
+  { "id": "property_7",
+  "slug": "habitacion-amoblada-en-cali",
+  "title": "Habitación amoblada en Cali",
+  "description": "Habitación privada en apartamento compartido, con servicios incluidos.",
+  "type": "room",
+  "status": "active",
+  "monthlyPrice": 850000,
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "area": 18,
+  "city": "Cali",
+  "state": "Valle del Cauca",
+  "country": "Colombia",
+  "address": "San Fernando",
+  "latitude": 3.451646,
+  "longitude": -76.532005,
+  "images": [
+  "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5"
+  ],
+  "ownerId": "user_6",
+  "verificationStatus": "rejected",
+  "verificationDocuments": [
+  {
+  "id": "document_7",
+  "type": "identity_document",
+  "fileName": "cedula_user6.pdf",
+  "fileUrl": "/mock/documents/cedula_user6.pdf",
+  "uploadedAt": "2026-05-09T09:00:00.000Z"
+  }
+  ],
+  "isFeatured": false,
+  "createdAt": "2026-05-09T09:00:00.000Z",
+  "updatedAt": "2026-05-09T09:00:00.000Z"
+  } 
 ]

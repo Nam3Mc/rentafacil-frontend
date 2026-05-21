@@ -1,5 +1,5 @@
 import { PropertiesListingSection } from "@/components/sections/properties-listing-section";
-
+import { RecentlyViewedProperties } from "@/components/sections/recently-viewed-properties";
 import { PropertyFavoritesCounter } from "@/components/property/property-favorites-counter";
 
 export default function PropertiesPage() {
@@ -11,6 +11,7 @@ export default function PropertiesPage() {
       </div>
 
       <PropertiesListingSection />
+      <RecentlyViewedProperties />
     </div>
   );
 }

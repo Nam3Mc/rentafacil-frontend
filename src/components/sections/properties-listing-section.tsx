@@ -1,20 +1,17 @@
 "use client";
 
 import { useMemo } from "react";
-
 import { useProperties } from "@/hooks/use-properties";
-
 import { usePropertyFilterStore } from "@/store/property-filter.store";
-
 import { Container } from "@/components/layout/container";
-
 import { PropertyFilters } from "@/components/property/property-filters";
 import { PropertyGrid } from "@/components/property/property-grid";
 
 export function PropertiesListingSection() {
   const { properties } = useProperties();
-
-  const {
+  const { sortBy } =
+    usePropertyFilterStore();
+    const {
     search,
     selectedType,
   } = usePropertyFilterStore();
@@ -45,6 +42,41 @@ export function PropertiesListingSection() {
     selectedType,
   ]);
 
+  const sortedProperties =
+    useMemo(() => {
+
+      return [
+        ...filteredProperties,
+      ].sort((a, b) => {
+
+        if (
+          sortBy ===
+          "price_asc"
+        ) {
+          return (
+            a.monthlyPrice -
+            b.monthlyPrice
+          );
+        }
+
+        if (
+          sortBy ===
+          "price_desc"
+        ) {
+          return (
+            b.monthlyPrice -
+            a.monthlyPrice
+          );
+        }
+
+        return 0;
+      });
+
+    }, [
+      filteredProperties,
+      sortBy,
+    ]);
+
   return (
     <section className="py-20">
       <Container>
@@ -57,7 +89,7 @@ export function PropertiesListingSection() {
         </div>
 
         <PropertyGrid
-          properties={filteredProperties}
+          properties={sortedProperties}
         />
       </Container>
     </section>

@@ -1,32 +1,59 @@
 import { create } from "zustand";
 
+export type PropertySortOption =
+  | "newest"
+  | "price_asc"
+  | "price_desc";
+
 interface PropertyFilterState {
   search: string;
 
   selectedType: string;
 
+  sortBy: PropertySortOption;
+
   setSearch: (
-    search: string
+    value: string
   ) => void;
 
   setSelectedType: (
-    type: string
+    value: string
+  ) => void;
+
+  setSortBy: (
+    value: PropertySortOption
   ) => void;
 }
 
 export const usePropertyFilterStore =
-  create<PropertyFilterState>((set) => ({
-    search: "",
+  create<PropertyFilterState>(
+    (set) => ({
+      search: "",
 
-    selectedType: "all",
+      selectedType: "all",
 
-    setSearch: (search) =>
-      set({ search }),
+      sortBy: "newest",
 
-    setSelectedType: (
-      selectedType
-    ) =>
-      set({
-        selectedType,
-      }),
-  }));
+      setSearch: (
+        value
+      ) =>
+        set({
+          search: value,
+        }),
+
+      setSelectedType: (
+        value
+      ) =>
+        set({
+          selectedType:
+            value,
+        }),
+
+      setSortBy: (
+        value
+      ) =>
+        set({
+          sortBy: value,
+        }),
+    })
+  );
