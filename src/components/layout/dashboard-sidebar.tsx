@@ -1,7 +1,7 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-
 import {
   Building2,
   Heart,
@@ -11,7 +11,6 @@ import {
   Shield,
   Users,
 } from "lucide-react";
-
 import { useAuthStore } from "@/store/auth.store";
 import { Logo } from "../shared/logo";
 
@@ -45,19 +44,24 @@ const ownerLinks = [
     icon: Building2,
   },
   {
+    label: "Leads",
+    href: "/dashboard/leads",
+    icon: Users,
+  },
+  {
     label: "Mensajes",
     href: "/dashboard/messages",
     icon: MessageCircle,
   },
   {
-    label: "Configuración",
-    href: "/dashboard/settings",
-    icon: Settings,
-  },
-  {
     label: "Nueva propiedad",
     href: "/dashboard/new-property",
     icon: Building2,
+  },
+  {
+    label: "Configuración",
+    href: "/dashboard/settings",
+    icon: Settings,
   },
 ];
 
@@ -85,6 +89,10 @@ const adminLinks = [
 ];
 
 export function DashboardSidebar() {
+
+  const pathname =
+    usePathname();
+
   const { user } =
     useAuthStore();
 
@@ -127,13 +135,20 @@ export function DashboardSidebar() {
       {/* Navigation */}
       <nav className="flex-1 space-y-2 p-4">
         {links.map((link) => {
+
+          const isActive =
+            pathname === link.href;
           const Icon = link.icon;
 
           return (
             <Link
               key={link.href}
               href={link.href}
-              className="flex items-center gap-3 rounded-2xl px-4 py-3 text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
+              className={`flex items-center gap-3 rounded-2xl px-4 py-3 transition-all ${
+                isActive
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
+              }`}
             >
               <Icon className="size-5" />
 

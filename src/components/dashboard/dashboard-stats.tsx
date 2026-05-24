@@ -1,5 +1,7 @@
 "use client";
 
+import { usePropertyInquiries } from "@/hooks/use-property-inquiries";
+
 import {
   Building2,
   Eye,
@@ -12,6 +14,9 @@ import {
 } from "@/hooks/use-owner-properties";
 
 export function DashboardStats() {
+
+  const { inquiries } =
+    usePropertyInquiries();
 
   const {
     properties,
@@ -40,7 +45,7 @@ export function DashboardStats() {
     properties.length * 203;
 
   const totalLeads =
-    properties.length * 4;
+    inquiries.length;
 
   const conversionRate =
     properties.length

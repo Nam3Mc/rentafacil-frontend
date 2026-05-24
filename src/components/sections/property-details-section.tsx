@@ -1,247 +1,166 @@
 "use client";
 
 import Image from "next/image";
-
+import { useState } from "react";
 import { MapPin } from "lucide-react";
 
 import { Property } from "@/types/property.types";
-
 import { Container } from "@/components/layout/container";
-
 import { PropertyFeatures } from "@/components/property/property-features";
-
 import { PropertySidebar } from "@/components/property/property-sidebar";
-
-import { PropertyAnalyticsCard } from "@/components/dashboard/property-analytics-card";
-
-import { PropertyQuickActions } from "@/components/dashboard/property-quick-actions";
+import { PropertyVerificationBadge } from "@/components/property/property-verification-badge";
+import { PropertyStatusBadge } from "@/components/property/property-status-badge";
 
 interface PropertyDetailsSectionProps {
   property: Property;
 }
 
+const fallbackImage = "images/property-placeholder.png";
+
 export function PropertyDetailsSection({
   property,
 }: PropertyDetailsSectionProps) {
+  const images =
+    property.images?.length > 0
+      ? property.images
+      : [fallbackImage];
 
-  const analytics = {
-    propertyId: property.id,
-
-    views: 248,
-
-    favorites: 32,
-
-    contacts: 12,
-
-    conversionRate: 8.3,
-  };
+  const [selectedImage, setSelectedImage] =
+    useState(images[0]);
 
   return (
     <section className="py-12 md:py-16">
-
       <Container>
-
         <div className="space-y-12">
-
-          {/* Header */}
           <div className="space-y-8">
-
-            {/* Badges */}
             <div className="flex flex-wrap items-center gap-3">
+              <PropertyVerificationBadge
+                status={property.verificationStatus}
+              />
 
-              <div className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                Propiedad verificada
-              </div>
+              <PropertyStatusBadge
+                status={property.status}
+              />
 
               {property.isFeatured && (
                 <div className="inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm font-medium">
                   Destacada
                 </div>
               )}
-
             </div>
 
-            {/* Main Content */}
             <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
-
               <div>
-
                 <h1 className="max-w-4xl font-heading text-5xl font-bold tracking-tight md:text-6xl">
                   {property.title}
                 </h1>
 
                 <div className="mt-5 flex items-center gap-2 text-lg text-muted-foreground">
-
                   <MapPin className="size-5" />
 
                   <p>
-                    {property.city},{" "}
-                    {property.state}
+                    {property.city}, {property.state}
                   </p>
-
                 </div>
-
               </div>
 
-              {/* Price Card */}
               <div className="rounded-[2rem] border border-border bg-card p-6">
-
                 <p className="text-sm text-muted-foreground">
                   Precio mensual
                 </p>
 
                 <p className="mt-2 text-5xl font-bold tracking-tight">
-                  $
-                  {property.monthlyPrice.toLocaleString(
-                    "es-CO"
-                  )}
+                  ${property.monthlyPrice.toLocaleString("es-CO")}
                 </p>
-
               </div>
-
             </div>
-
           </div>
 
-          {/* Main Layout */}
           <div className="grid gap-12 xl:grid-cols-[1fr_380px]">
-
-            {/* Left Content */}
             <div className="space-y-10">
-
-              {/* Gallery */}
-              <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-
-                {/* Main Image */}
+              <div className="space-y-4">
                 <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-border bg-muted">
-
                   <Image
-                    src={property.images[0]}
+                    src={selectedImage}
                     alt={property.title}
                     fill
                     priority
-                    sizes="(max-width: 1024px) 100vw, 66vw"
+                    sizes="(max-width: 1280px) 100vw, 66vw"
                     className="object-cover"
                   />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-
                 </div>
 
-                {/* Secondary Images */}
-                <div className="grid gap-4">
-
-                  {property.images
-                    .slice(1, 3)
-                    .map((image, index) => (
-                      <div
-                        key={index}
-                        className="relative aspect-[16/10] overflow-hidden rounded-[2rem] border border-border bg-muted"
+                {images.length > 1 && (
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    {images.slice(0, 3).map((image) => (
+                      <button
+                        key={image}
+                        type="button"
+                        onClick={() => setSelectedImage(image)}
+                        className={`relative aspect-[16/10] overflow-hidden rounded-2xl border transition-all ${
+                          selectedImage === image
+                            ? "border-primary"
+                            : "border-border"
+                        }`}
                       >
-
                         <Image
                           src={image}
                           alt={property.title}
                           fill
-                          sizes="(max-width: 1024px) 100vw, 33vw"
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           className="object-cover"
                         />
-
-                      </div>
+                      </button>
                     ))}
-
-                </div>
-
+                  </div>
+                )}
               </div>
 
-              {/* Features */}
-              <PropertyFeatures
-                property={property}
-              />
+              <PropertyFeatures property={property} />
 
-              {/* Description */}
               <div className="rounded-3xl border border-border bg-card p-8">
+                <h2 className="font-heading text-2xl font-bold tracking-tight">
+                  Descripción
+                </h2>
 
-                <div className="space-y-5">
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Información general de la propiedad
+                </p>
 
-                  <div>
+                <p className="mt-5 leading-8 text-muted-foreground">
+                  {property.description}
+                </p>
+              </div>
 
-                    <h2 className="font-heading text-2xl font-bold tracking-tight">
-                      Descripción
-                    </h2>
+              <div className="rounded-3xl border border-border bg-card p-8">
+                <h2 className="font-heading text-2xl font-bold tracking-tight">
+                  Ubicación
+                </h2>
 
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Información general de la propiedad
-                    </p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Dirección aproximada de la propiedad
+                </p>
 
-                  </div>
-
-                  <p className="leading-8 text-muted-foreground">
-                    {property.description}
+                <div className="mt-5 rounded-2xl bg-muted p-6">
+                  <p className="font-medium">
+                    {property.address}
                   </p>
 
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {property.city}, {property.state}, {property.country}
+                  </p>
                 </div>
-
               </div>
-
-              {/* Location */}
-              <div className="rounded-3xl border border-border bg-card p-8">
-
-                <div className="space-y-5">
-
-                  <div>
-
-                    <h2 className="font-heading text-2xl font-bold tracking-tight">
-                      Ubicación
-                    </h2>
-
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Dirección aproximada de la propiedad
-                    </p>
-
-                  </div>
-
-                  <div className="rounded-2xl bg-muted p-6">
-
-                    <p className="font-medium">
-                      {property.address}
-                    </p>
-
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {property.city},{" "}
-                      {property.state},{" "}
-                      {property.country}
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
             </div>
 
-            {/* Sidebar */}
-            <div className="sticky top-24 h-fit space-y-8">
-
-              <PropertySidebar
-                property={property}
-              />
-
-              <PropertyAnalyticsCard
-                analytics={analytics}
-              />
-
-              <PropertyQuickActions />
-
+            <div className="sticky top-24 h-fit">
+              <PropertySidebar property={property} />
             </div>
-
           </div>
-
         </div>
-
       </Container>
-
     </section>
   );
 }
