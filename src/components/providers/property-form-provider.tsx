@@ -22,9 +22,7 @@ import { usePropertyPublicationStore } from "@/store/property-publication.store"
 
 interface PropertyFormProviderProps {
   children: React.ReactNode;
-
   initialValues?: Partial<PropertyDraftSchema>;
-
   mode?: "create" | "edit";
 }
 
@@ -46,44 +44,43 @@ export function PropertyFormProvider({
   } =
     usePropertyPublicationStore();
 
+  const defaultValues: PropertyDraftSchema = {
+    id: initialValues?.id || "",
+    slug: initialValues?.slug || "",
+    title: initialValues?.title || "",
+    description:
+      initialValues?.description || "",
+    type: initialValues?.type || "",
+    monthlyPrice:
+      initialValues?.monthlyPrice || 0,
+    bedrooms: initialValues?.bedrooms || 0,
+    bathrooms:
+      initialValues?.bathrooms || 0,
+    area: initialValues?.area || 0,
+    city: initialValues?.city || "",
+    address: initialValues?.address || "",
+    images: initialValues?.images || [],
+    verificationDocuments:
+      initialValues?.verificationDocuments || [],
+    status: initialValues?.status || "draft",
+  };
+
   const methods =
     useForm<PropertyDraftSchema>({
       resolver: zodResolver(
         propertyDraftSchema
       ),
-
-      defaultValues: {
-        title:
-          initialValues?.title || "",
-
-        description:
-          initialValues?.description ||
-          "",
-
-        city:
-          initialValues?.city || "",
-
-        address:
-          initialValues?.address || "",
-
-        monthlyPrice:
-          initialValues?.monthlyPrice ||
-          0,
-
-        bedrooms:
-          initialValues?.bedrooms || 0,
-
-        bathrooms:
-          initialValues?.bathrooms || 0,
-
-        area:
-          initialValues?.area || 0,
-      },
-
+      defaultValues,
       mode: "onChange",
     });
 
   useEffect(() => {
+    if (mode === "edit") {
+      methods.reset(defaultValues);
+      updateDraft(defaultValues);
+      return;
+    }
+
     if (
       mode === "create" &&
       draft.title
@@ -93,10 +90,6 @@ export function PropertyFormProvider({
   }, []);
 
   useEffect(() => {
-    if (mode !== "create") {
-      return;
-    }
-
     const subscription =
       methods.watch((values) => {
         updateDraft(
@@ -106,7 +99,7 @@ export function PropertyFormProvider({
 
     return () =>
       subscription.unsubscribe();
-  }, [methods, updateDraft, mode]);
+  }, [methods, updateDraft]);
 
   return (
     <PropertyFormContext.Provider

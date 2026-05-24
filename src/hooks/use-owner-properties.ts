@@ -1,87 +1,40 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useMemo } from "react";
 
-import {
-  propertyService,
-} from "@/services/property.service";
+import { useAuthStore } from "@/store/auth.store";
 
-import {
-  useAuthStore,
-} from "@/store/auth.store";
-
-import {
-  usePropertySubmissionStore,
-} from "@/store/property-submission.store";
-
-import {
-  Property,
-} from "@/types/property.types";
+import { usePropertyStore } from "@/store/property.store";
 
 export function useOwnerProperties() {
 
-  const {
-    user,
-  } =
+  const { user } =
     useAuthStore();
 
-  const {
-    isSuccess,
-  } =
-    usePropertySubmissionStore();
+  const { properties } =
+    usePropertyStore();
 
-  const [
-    properties,
-    setProperties,
-  ] =
-    useState<Property[]>([]);
-
-  const [
-    isLoading,
-    setIsLoading,
-  ] =
-    useState(true);
-
-  useEffect(() => {
-
-    async function load() {
+  const ownerProperties =
+    useMemo(() => {
 
       if (!user) {
-        return;
+        return [];
       }
 
-      try {
+      return properties.filter(
+        (property) =>
+          property.ownerId === user.id
+      );
 
-        const data =
-          await propertyService.getByOwnerId(
-            user.id
-          );
-
-        setProperties(data);
-
-      } catch (error) {
-
-        console.error(error);
-
-      } finally {
-
-        setIsLoading(false);
-
-      }
-    }
-
-    load();
-
-  }, [
-    user,
-    isSuccess,
-  ]);
+    }, [
+      properties,
+      user,
+    ]);
 
   return {
-    properties,
-    isLoading,
+    properties:
+      ownerProperties,
+
+    isLoading: false,
   };
 }

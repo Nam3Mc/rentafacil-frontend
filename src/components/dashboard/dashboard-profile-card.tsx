@@ -18,11 +18,11 @@ export function DashboardProfileCard() {
 
   if (!user) {
     return (
-      <div className="flex items-center gap-3 rounded-[2rem] border border-border bg-card p-8">
+      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-6">
 
         <Loader2 className="size-5 animate-spin text-primary" />
 
-        <p className="text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           Cargando perfil...
         </p>
 
@@ -31,11 +31,12 @@ export function DashboardProfileCard() {
   }
 
   return (
-    <div className="rounded-[2rem] border border-border bg-card p-8">
+    <div className="rounded-2xl border border-border bg-card p-6">
 
-      <div className="flex flex-col items-center text-center">
+      <div className="flex items-center gap-4">
 
-        <div className="relative size-24 overflow-hidden rounded-full border border-border">
+        {/* Avatar */}
+        <div className="relative size-16 shrink-0 overflow-hidden rounded-2xl border border-border">
 
           <Image
             src={
@@ -44,36 +45,42 @@ export function DashboardProfileCard() {
             }
             alt={`${user.firstName} ${user.lastName}`}
             fill
+            sizes="64px"
             className="object-cover"
           />
 
         </div>
 
-        <div className="mt-6 flex items-center gap-2">
+        {/* Info */}
+        <div className="min-w-0 flex-1">
 
-          <h2 className="font-heading text-2xl font-bold tracking-tight">
+          <div className="flex items-center gap-2">
 
-            {user.firstName}{" "}
-            {user.lastName}
+            <h2 className="truncate font-heading text-lg font-bold tracking-tight">
 
-          </h2>
+              {user.firstName}{" "}
+              {user.lastName}
 
-          {user.isVerified && (
-            <BadgeCheck className="size-5 text-primary" />
-          )}
+            </h2>
 
-        </div>
+            {user.isVerified && (
+              <BadgeCheck className="size-4 shrink-0 text-primary" />
+            )}
 
-        <p className="mt-2 text-muted-foreground">
-          {user.email}
-        </p>
+          </div>
 
-        <div className="mt-5 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium capitalize text-primary">
+          <p className="mt-1 truncate text-sm text-muted-foreground">
+            {user.email}
+          </p>
 
-          {user.role.replace(
-            "_",
-            " "
-          )}
+          <div className="mt-3 inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-medium capitalize text-primary">
+
+            {user.role.replace(
+              "_",
+              " "
+            )}
+
+          </div>
 
         </div>
 

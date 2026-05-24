@@ -10,6 +10,8 @@ import {
   Settings,
   Shield,
   Users,
+  TrendingUp,
+  Activity
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 import { Logo } from "../shared/logo";
@@ -57,6 +59,16 @@ const ownerLinks = [
     label: "Nueva propiedad",
     href: "/dashboard/new-property",
     icon: Building2,
+  },
+  {
+    label: "Analytics",
+    href: "/dashboard/analytics",
+    icon: TrendingUp,
+  },
+  {
+    label: "Actividad",
+    href: "/dashboard/activity",
+    icon: Activity,
   },
   {
     label: "Configuración",

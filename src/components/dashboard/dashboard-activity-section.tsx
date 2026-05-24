@@ -4,12 +4,23 @@ import { useActivities } from "@/hooks/use-activities";
 
 import { ActivityCard } from "@/components/dashboard/activity-card";
 
-export function DashboardActivitySection() {
 
+interface DashboardActivitySectionProps {
+  limit?: number;
+}
+
+export function DashboardActivitySection({
+    limit,
+  }: DashboardActivitySectionProps) {
   const {
     activities,
   } =
     useActivities();
+
+  const visibleActivities =
+    limit
+      ? activities.slice(0, limit)
+      : activities;
 
   return (
     <section className="space-y-8">
@@ -21,6 +32,16 @@ export function DashboardActivitySection() {
         </h2>
 
         <p className="mt-2 text-muted-foreground">
+          {limit && (
+            <div className="mt-4">
+              <a
+                href="/dashboard/activity"
+                className="text-sm font-medium text-primary transition-all hover:opacity-80"
+              >
+                Ver toda la actividad →
+              </a>
+            </div>
+          )}
           Últimos movimientos dentro de la plataforma.
         </p>
 
@@ -28,7 +49,7 @@ export function DashboardActivitySection() {
 
       <div className="space-y-4">
 
-        {activities.map(
+        {visibleActivities.map(
           (activity) => (
             <ActivityCard
               key={activity.id}

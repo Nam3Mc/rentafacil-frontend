@@ -1,11 +1,20 @@
-import { UploadedMedia } from "@/types/media.types";
+import {
+  PropertyStatus,
+  PropertyVerificationDocument,
+} from "@/types/property.types";
 
 export interface PropertyDraft {
+  id?: string;
+
+  slug?: string;
+
   title: string;
 
   description: string;
 
   type: string;
+
+  status: PropertyStatus;
 
   monthlyPrice: number;
 
@@ -19,5 +28,7 @@ export interface PropertyDraft {
 
   address: string;
 
-  images: UploadedMedia[];
+  images: string[];
+
+  verificationDocuments: PropertyVerificationDocument[];
 }

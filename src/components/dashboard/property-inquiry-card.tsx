@@ -9,45 +9,53 @@ import { PropertyInquiry } from "@/types/property-inquiry.types";
 
 interface PropertyInquiryCardProps {
   inquiry: PropertyInquiry;
+  variant?: "compact" | "full";
 }
 
 export function PropertyInquiryCard({
   inquiry,
+  variant = "compact",
 }: PropertyInquiryCardProps) {
-  return (
-    <div className="rounded-[2rem] border border-border bg-card p-6 transition-all hover:border-primary/20">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <User className="size-4 text-primary" />
+  const isFull = variant === "full";
 
-            <h3 className="font-semibold">
+  return (
+    <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/20">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <User className="size-4 shrink-0 text-primary" />
+
+            <h3 className="truncate font-semibold">
               {inquiry.name}
             </h3>
           </div>
 
-          <div className="mt-4 space-y-2 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Mail className="size-4" />
-              <p>{inquiry.email}</p>
+          <div className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+            <div className="flex min-w-0 items-center gap-2">
+              <Mail className="size-4 shrink-0" />
+
+              <p className="truncate">
+                {inquiry.email}
+              </p>
             </div>
 
-            {inquiry.phone && (
+            {isFull && inquiry.phone && (
               <div className="flex items-center gap-2">
-                <Phone className="size-4" />
+                <Phone className="size-4 shrink-0" />
+
                 <p>{inquiry.phone}</p>
               </div>
             )}
           </div>
         </div>
 
-        <div className="w-fit rounded-full bg-primary/10 px-4 py-2 text-xs font-medium text-primary">
-          Nuevo lead
+        <div className="shrink-0 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+          Lead
         </div>
       </div>
 
-      <div className="mt-6 rounded-2xl bg-muted p-5">
-        <div className="mb-3 flex items-center gap-2">
+      <div className="mt-4 rounded-2xl bg-muted p-4">
+        <div className="mb-2 flex items-center gap-2">
           <MessageSquare className="size-4 text-primary" />
 
           <p className="text-sm font-medium">
@@ -55,28 +63,35 @@ export function PropertyInquiryCard({
           </p>
         </div>
 
-        <p className="text-sm leading-7 text-muted-foreground">
+        <p
+          className={`text-sm leading-6 text-muted-foreground ${
+            isFull ? "" : "line-clamp-2"
+          }`}
+        >
           {inquiry.message}
         </p>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-muted-foreground">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs text-muted-foreground">
           {new Date(inquiry.createdAt).toLocaleDateString("es-CO")}
         </p>
 
-        <a
-          href={`mailto:${inquiry.email}`}
-          className="inline-flex h-10 items-center justify-center rounded-xl border border-border px-4 text-sm font-medium transition-all hover:bg-muted"
-        >
-          Responder por email
-        </a>
-        <a
-          href="/dashboard/messages"
-          className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition-all hover:opacity-90"
-        >
-          Abrir mensajes
-        </a>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href={`mailto:${inquiry.email}`}
+            className="inline-flex h-9 items-center justify-center rounded-xl border border-border px-3 text-xs font-medium transition-all hover:bg-muted"
+          >
+            Email
+          </a>
+
+          <a
+            href="/dashboard/messages"
+            className="inline-flex h-9 items-center justify-center rounded-xl bg-primary px-3 text-xs font-medium text-primary-foreground transition-all hover:opacity-90"
+          >
+            Mensajes
+          </a>
+        </div>
       </div>
     </div>
   );

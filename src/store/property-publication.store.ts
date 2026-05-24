@@ -24,6 +24,8 @@ const initialDraft: PropertyDraft = {
 
   type: "",
 
+  status: "draft",
+
   monthlyPrice: 0,
 
   bedrooms: 0,
@@ -37,18 +39,20 @@ const initialDraft: PropertyDraft = {
   address: "",
 
   images: [],
+
+  verificationDocuments: [],
 };
 
 export const usePropertyPublicationStore =
   create<PropertyPublicationState>(
     (set) => ({
+
       draft: initialDraft,
 
       updateDraft: (values) =>
         set((state) => ({
           draft: {
             ...state.draft,
-
             ...values,
           },
         })),
@@ -57,5 +61,6 @@ export const usePropertyPublicationStore =
         set({
           draft: initialDraft,
         }),
+
     })
   );

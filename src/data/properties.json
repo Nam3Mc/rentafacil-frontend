@@ -101,7 +101,7 @@
   "images": [
   "https://images.unsplash.com/photo-1505691723518-36a3b69a3b9f"
   ],
-  "ownerId": "user_2",
+  "ownerId": "user_1",
   "verificationStatus": "pending",
   "verificationDocuments": [],
   "isFeatured": false,
@@ -127,7 +127,7 @@
   "images": [
   "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
   ],
-  "ownerId": "user_3",
+  "ownerId": "user_1",
   "verificationStatus": "approved",
   "verificationDocuments": [
   {
@@ -161,7 +161,7 @@
   "images": [
   "https://images.unsplash.com/photo-1505691723518-36a3b69a3b9f"
   ],
-  "ownerId": "user_4",
+  "ownerId": "user_1",
   "verificationStatus": "approved",
   "verificationDocuments": [
   {
@@ -195,7 +195,7 @@
   "images": [
   "https://images.unsplash.com/photo-1505691723518-36a3b69a3b9f"
   ],
-  "ownerId": "user_5",
+  "ownerId": "user_1",
   "verificationStatus": "approved",
   "verificationDocuments": [
   {
@@ -236,7 +236,7 @@
   "images": [
   "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5"
   ],
-  "ownerId": "user_6",
+  "ownerId": "user_1",
   "verificationStatus": "rejected",
   "verificationDocuments": [
   {

@@ -2,17 +2,13 @@
 
 interface TextFieldProps {
   label: string;
-
   placeholder?: string;
-
   error?: {
     message?: string;
   };
-
   type?: string;
-
   value?: string | number;
-
+  min?: number;
   onChange?: (
     event: React.ChangeEvent<HTMLInputElement>
   ) => void;
@@ -24,6 +20,7 @@ export function TextField({
   error,
   type = "text",
   value,
+  min,
   onChange,
 }: TextFieldProps) {
   return (
@@ -34,6 +31,7 @@ export function TextField({
 
       <input
         type={type}
+        min={min}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
@@ -44,7 +42,7 @@ export function TextField({
         }`}
       />
 
-      {error && (
+      {error?.message && (
         <p className="text-sm text-destructive">
           {error.message}
         </p>

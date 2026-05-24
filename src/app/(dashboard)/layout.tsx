@@ -12,12 +12,21 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const { user } =
+
+  const {
+    user,
+    isHydrated,
+  } =
     useAuthGuard();
+  
+  if (!isHydrated) {
+    return null;
+  }
   
   if (!user) {
     return null;
   }
+
   return (
     <div className="flex min-h-screen bg-muted/30">
       

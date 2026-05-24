@@ -88,7 +88,11 @@ export function PropertyForm({
   usePropertyDraftPersistence();
 
 
-  const onSubmit = async () => {
+  const onSubmit = async (
+    status:
+      "draft" |
+      "pending_verification"
+  ) => {
   
     if (!user) {
       return;
@@ -121,9 +125,8 @@ export function PropertyForm({
         type:
           draft.type || "apartment",
       
-        status:
-          "pending_verification",
-      
+        status,
+
         monthlyPrice:
           Number(
             draft.monthlyPrice
@@ -262,7 +265,9 @@ export function PropertyForm({
         onSubmit={(event) => {
           event.preventDefault();
 
-          onSubmit();
+          onSubmit(
+            "pending_verification"
+          );
         }}
         className="space-y-10"
       >
@@ -542,6 +547,23 @@ export function PropertyForm({
                   >
                     Cancelar
                   </Link>
+                )}
+
+                {mode !== "edit" && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    disabled={isSubmitting}
+                    onClick={() =>
+                      onSubmit("draft")
+                    }
+                    className="h-14 rounded-2xl px-8"
+                  >
+                  
+                    Guardar borrador
+                  
+                  </Button>
                 )}
 
                 <Button

@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useState,
 } from "react";
 
 import {
@@ -17,14 +18,27 @@ export function useAuthGuard() {
   const router =
     useRouter();
 
-  const {
-    user,
-  } =
+  const { user } =
     useAuthStore();
+
+  const [
+    isHydrated,
+    setIsHydrated,
+  ] =
+    useState(false);
 
   useEffect(() => {
 
-    if (!user) {
+    setIsHydrated(true);
+
+  }, []);
+
+  useEffect(() => {
+
+    if (
+      isHydrated &&
+      !user
+    ) {
 
       router.push(
         "/login"
@@ -35,9 +49,11 @@ export function useAuthGuard() {
   }, [
     user,
     router,
+    isHydrated,
   ]);
 
   return {
     user,
+    isHydrated,
   };
 }

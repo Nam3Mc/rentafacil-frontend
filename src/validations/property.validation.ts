@@ -2,6 +2,10 @@ import { z } from "zod";
 
 export const propertyDraftSchema =
   z.object({
+    id: z.string().optional(),
+
+    slug: z.string().optional(),
+
     title: z
       .string()
       .min(
@@ -15,6 +19,8 @@ export const propertyDraftSchema =
         30,
         "La descripción debe tener al menos 30 caracteres."
       ),
+
+    type: z.string().optional(),
 
     city: z
       .string()
@@ -57,6 +63,13 @@ export const propertyDraftSchema =
         1,
         "El área debe ser válida."
       ),
+
+    images: z.array(z.string()).optional(),
+
+    verificationDocuments:
+      z.array(z.any()).optional(),
+
+    status: z.string().optional(),
   });
 
 export type PropertyDraftSchema =

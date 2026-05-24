@@ -2,133 +2,164 @@
 
 import Image from "next/image";
 
-import { useCallback, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import { useDropzone } from "react-dropzone";
 
-import { ImagePlus, Star } from "lucide-react";
-
-import { UploadedMedia } from "@/types/media.types";
-import { useEffect } from "react";
+import {
+  ImagePlus,
+  Star,
+} from "lucide-react";
 
 import { usePropertyPublicationStore } from "@/store/property-publication.store";
 
-export function PropertyImageUpload() {
-  const [images, setImages] = useState<
-    UploadedMedia[]
-  >([]);
+interface UploadedMedia {
+  id: string;
+  file?: File;
+  preview: string;
+  isFeatured: boolean;
+}
 
-const { updateDraft,} = usePropertyPublicationStore();
+export function PropertyImageUpload() {
+  const [images, setImages] =
+    useState<UploadedMedia[]>([]);
+
+  const {
+    draft,
+    updateDraft,
+  } =
+    usePropertyPublicationStore();
+
+  useEffect(() => {
+    if (
+      images.length === 0 &&
+      draft.images?.length
+    ) {
+      setImages(
+        draft.images.map((image, index) => ({
+          id: `existing_${index}`,
+          file: undefined,
+          preview: image,
+          isFeatured: index === 0,
+        }))
+      );
+    }
+  }, [draft.images, images.length]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const newImages = acceptedFiles.map(
-        (file, index) => ({
+      const newImages =
+        acceptedFiles.map((file, index) => ({
           id: crypto.randomUUID(),
-
           file,
-
           preview:
             URL.createObjectURL(file),
-
           isFeatured:
             images.length === 0 &&
             index === 0,
-        })
-      );
+        }));
 
       setImages((prev) => [
         ...prev,
         ...newImages,
       ]);
     },
-    [images]
+    [images.length]
   );
 
-  const { getRootProps, getInputProps } =
+  const {
+    getRootProps,
+    getInputProps,
+  } =
     useDropzone({
       accept: {
         "image/*": [],
       },
-
       multiple: true,
     });
 
-  function setFeaturedImage(
-    id: string
-  ) {
-    setImages((prev) =>
-      prev.map((image) => ({
-        ...image,
+  function setFeaturedImage(id: string) {
+    setImages((prev) => {
+      const updated =
+        prev.map((image) => ({
+          ...image,
+          isFeatured:
+            image.id === id,
+        }));
 
-        isFeatured:
-          image.id === id,
-      }))
-    );
+      const featured =
+        updated.find(
+          (image) => image.id === id
+        );
+
+      const rest =
+        updated.filter(
+          (image) => image.id !== id
+        );
+
+      return featured
+        ? [featured, ...rest]
+        : updated;
+    });
   }
 
   useEffect(() => {
-  
+    if (images.length === 0) {
+      return;
+    }
+
     updateDraft({
-    
-      images:
-        images.map(
-          (image) =>
-            image.preview
-        ),
-      
+      images: images.map(
+        (image) => image.preview
+      ),
     });
-  
-  }, [
-    images,
-    updateDraft,
-  ]);
+  }, [images, updateDraft]);
 
   return (
     <div className="space-y-8">
-      
-      {/* Upload Zone */}
       <div
         {...getRootProps()}
-        className="flex min-h-[260px] cursor-pointer items-center justify-center rounded-[2rem] border-2 border-dashed border-border bg-muted transition-all hover:border-primary hover:bg-primary/5"
+        className="flex min-h-[220px] cursor-pointer items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted transition-all hover:border-primary hover:bg-primary/5"
       >
         <input {...getInputProps()} />
 
         <div className="text-center">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary/10">
-            <ImagePlus className="size-8 text-primary" />
+          <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-primary/10">
+            <ImagePlus className="size-7 text-primary" />
           </div>
 
-          <p className="mt-6 text-lg font-semibold">
+          <p className="mt-5 font-semibold">
             Arrastra imágenes aquí
           </p>
 
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             PNG, JPG o WEBP
           </p>
         </div>
       </div>
 
-      {/* Preview Grid */}
       {images.length > 0 && (
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {images.map((image) => (
             <div
               key={image.id}
-              className="group relative overflow-hidden rounded-[2rem] border border-border bg-card"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-card"
             >
               <div className="relative aspect-[4/3]">
                 <Image
                   src={image.preview}
                   alt="Property image"
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover"
                 />
               </div>
 
-              {/* Actions */}
-              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-4">
-                
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-3">
                 <button
                   type="button"
                   onClick={() =>
@@ -146,7 +177,7 @@ const { updateDraft,} = usePropertyPublicationStore();
 
                   {image.isFeatured
                     ? "Principal"
-                    : "Marcar principal"}
+                    : "Principal"}
                 </button>
               </div>
             </div>

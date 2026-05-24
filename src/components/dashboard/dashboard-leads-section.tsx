@@ -6,9 +6,21 @@ import { usePropertyInquiries } from "@/hooks/use-property-inquiries";
 
 import { PropertyInquiryCard } from "@/components/dashboard/property-inquiry-card";
 
-export function DashboardLeadsSection() {
+interface DashboardLeadsSectionProps {
+  limit?: number;
+}
+
+  export function DashboardLeadsSection({
+    limit,
+  }: DashboardLeadsSectionProps) {
+
   const { inquiries } =
     usePropertyInquiries();
+
+  const visibleInquiries =
+    limit
+      ? inquiries.slice(0, limit)
+      : inquiries;
 
   return (
     <section className="space-y-8">
@@ -18,7 +30,17 @@ export function DashboardLeadsSection() {
         </h2>
 
         <p className="mt-2 text-muted-foreground">
-          Personas interesadas en tus propiedades.
+          {limit && (
+            <div className="mt-4">
+              <a
+                href="/dashboard/leads"
+                className="text-sm font-medium text-primary transition-all hover:opacity-80"
+                >
+                Ver todos →
+              </a>
+            </div>
+          )}
+        Personas interesadas en tus propiedades.
         </p>
       </div>
 
@@ -38,7 +60,7 @@ export function DashboardLeadsSection() {
         </div>
       ) : (
         <div className="grid gap-6">
-          {inquiries.map((inquiry) => (
+          {visibleInquiries.map((inquiry) => (
             <PropertyInquiryCard
               key={inquiry.id}
               inquiry={inquiry}

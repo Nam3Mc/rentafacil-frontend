@@ -1,76 +1,138 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Pencil, PauseCircle,} from "lucide-react";
+
+import {
+  Archive,
+  CheckCircle2,
+  Eye,
+  MoreHorizontal,
+  PauseCircle,
+  Pencil,
+  PlayCircle,
+  Trash2,
+} from "lucide-react";
+
 import { PropertyStatusBadge } from "@/components/property/property-status-badge";
+
 import { useOwnerProperties } from "@/hooks/use-owner-properties";
-import { Trash2 } from "lucide-react";
-import { propertyService } from "@/services/property.service";
+
+import { usePropertyStore } from "@/store/property.store";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function DashboardPropertiesTable() {
 
-  const { properties, isLoading, } = useOwnerProperties();
+  const {
+    properties,
+    isLoading,
+  } =
+    useOwnerProperties();
 
-  async function handleDelete(
-  propertyId: string
-) {
+  const {
+    deleteProperty,
+    updateProperty,
+  } =
+    usePropertyStore();
 
-  const confirmed =
-    window.confirm(
-      "¿Eliminar esta propiedad?"
-    );
+  function handleDelete(
+    propertyId: string
+  ) {
 
-  if (!confirmed) {
-    return;
+    const confirmed =
+      window.confirm(
+        "¿Eliminar esta propiedad?"
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    deleteProperty(propertyId);
   }
 
-  try {
-
-    await propertyService.delete(
-      propertyId
-    );
-
-    window.location.reload();
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
-}
-  
   if (isLoading) {
 
     return (
-      <div className="rounded-[2rem] border border-border bg-card p-10 text-center text-muted-foreground">
+      <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
 
         Cargando propiedades...
 
       </div>
     );
   }
-  return (
-    <div className="overflow-hidden rounded-[2rem] border border-border bg-card">
+
+  if (
+    properties.length === 0
+  ) {
+  
+    return (
+    
+      <div className="rounded-2xl border border-dashed border-border bg-card p-14 text-center">
       
+        <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+    
+          <Archive className="size-7" />
+    
+        </div>
+    
+        <h2 className="mt-6 font-heading text-3xl font-bold tracking-tight">
+    
+          No tienes propiedades
+    
+        </h2>
+    
+        <p className="mx-auto mt-3 max-w-md text-muted-foreground">
+    
+          Publica tu primera propiedad para comenzar a recibir solicitudes y administrar arrendamientos.
+    
+        </p>
+    
+        <Link
+          href="/dashboard/new-property"
+          className="mt-8 inline-flex h-12 items-center justify-center rounded-2xl bg-primary px-6 font-medium text-primary-foreground transition-all hover:opacity-90"
+        >
+        
+          Publicar propiedad
+    
+        </Link>
+    
+      </div>
+  
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+
       {/* Header */}
-      <div className="border-b border-border p-8">
-        <h2 className="font-heading text-3xl font-bold tracking-tight">
+      <div className="border-b border-border p-6">
+
+        <h2 className="font-heading text-2xl font-bold tracking-tight">
           Gestión de propiedades
         </h2>
 
-        <p className="mt-3 text-muted-foreground">
+        <p className="mt-2 text-muted-foreground">
           Administra publicaciones, estados y solicitudes.
         </p>
+
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
-        
+
         <table className="w-full min-w-[900px]">
-          
+
           <thead className="border-b border-border bg-muted/40">
+
             <tr>
-              
+
               <th className="px-8 py-5 text-left text-sm font-medium text-muted-foreground">
                 Propiedad
               </th>
@@ -87,22 +149,29 @@ export function DashboardPropertiesTable() {
                 Visualizaciones
               </th>
 
-              <th className="px-8 py-5 text-left text-sm font-medium text-muted-foreground">
+              <th className="px-8 py-5 text-right text-sm font-medium text-muted-foreground">
                 Acciones
               </th>
+
             </tr>
+
           </thead>
 
           <tbody>
+
             {properties.map(
               (property) => (
+
                 <tr
                   key={property.id}
                   className="border-b border-border transition-all hover:bg-muted/30"
                 >
-                  
+
+                  {/* Property */}
                   <td className="px-8 py-6">
+
                     <div>
+
                       <p className="font-medium">
                         {property.title}
                       </p>
@@ -111,65 +180,192 @@ export function DashboardPropertiesTable() {
                         {property.city},{" "}
                         {property.state}
                       </p>
+
                     </div>
+
                   </td>
 
+                  {/* Status */}
                   <td className="px-8 py-6">
-                    <PropertyStatusBadge status="active" />
+
+                    <PropertyStatusBadge
+                      status={property.status}
+                    />
+
                   </td>
 
+                  {/* Price */}
                   <td className="px-8 py-6 font-medium">
+
                     $
                     {property.monthlyPrice.toLocaleString(
                       "es-CO"
                     )}
+
                   </td>
 
+                  {/* Views */}
                   <td className="px-8 py-6">
                     324
                   </td>
 
+                  {/* Actions */}
                   <td className="px-8 py-6">
-                    <div className="flex items-center gap-3">
 
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            property.id
-                          )
-                        }
-                        className="rounded-2xl border border-border p-3 text-red-500 transition-all hover:bg-red-500/10"
-                      >
-                      
-                        <Trash2 className="size-4" />
-                      
-                      </button>
-                      
-                      <Link
-                        href={`/properties/${property.slug}`}
-                        className="rounded-2xl border border-border p-3 transition-all hover:bg-muted"
-                      >
-                        <Eye className="size-4" />
-                      </Link>
+                    <div className="flex items-center justify-end">
 
-                      <Link
-                        href={`/dashboard/properties/${property.id}/edit`}
-                        className="rounded-2xl border border-border p-3 transition-all hover:bg-muted"
-                      >
-                        <Pencil className="size-4" />
-                      </Link>
+                      <DropdownMenu>
 
-                      <button className="rounded-2xl border border-border p-3 transition-all hover:bg-muted">
-                        <PauseCircle className="size-4" />
-                      </button>
+                        <DropdownMenuTrigger asChild>
+
+                          <button className="rounded-xl border border-border p-2 transition-all hover:bg-muted">
+
+                            <MoreHorizontal className="size-4" />
+
+                          </button>
+
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-52"
+                        >
+
+                          {/* View */}
+                          <DropdownMenuItem asChild>
+
+                            <Link
+                              href={`/properties/${property.slug}`}
+                            >
+
+                              <Eye className="size-4" />
+
+                              Ver propiedad
+
+                            </Link>
+
+                          </DropdownMenuItem>
+
+                          {/* Edit */}
+                          <DropdownMenuItem asChild>
+
+                            <Link
+                              href={`/dashboard/properties/${property.id}/edit`}
+                            >
+
+                              <Pencil className="size-4" />
+
+                              Editar
+
+                            </Link>
+
+                          </DropdownMenuItem>
+
+                          <DropdownMenuSeparator />
+
+                          {/* Pause / Activate */}
+                          <DropdownMenuItem
+                            onClick={() =>
+                              updateProperty({
+                                ...property,
+
+                                status:
+                                  property.status ===
+                                  "active"
+                                    ? "paused"
+                                    : "active",
+                              })
+                            }
+                          >
+
+                            {property.status ===
+                            "active" ? (
+                              <>
+                                <PauseCircle className="size-4" />
+
+                                Pausar
+                              </>
+                            ) : (
+                              <>
+                                <PlayCircle className="size-4" />
+
+                                Activar
+                              </>
+                            )}
+
+                          </DropdownMenuItem>
+
+                          {/* Mark rented */}
+                          <DropdownMenuItem
+                            onClick={() =>
+                              updateProperty({
+                                ...property,
+
+                                status: "rented",
+                              })
+                            }
+                          >
+
+                            <CheckCircle2 className="size-4" />
+
+                            Marcar rentada
+
+                          </DropdownMenuItem>
+
+                          {/* Archive */}
+                          <DropdownMenuItem
+                            onClick={() =>
+                              updateProperty({
+                                ...property,
+
+                                status: "archived",
+                              })
+                            }
+                          >
+
+                            <Archive className="size-4" />
+
+                            Archivar
+
+                          </DropdownMenuItem>
+
+                          <DropdownMenuSeparator />
+
+                          {/* Delete */}
+                          <DropdownMenuItem
+                            variant="destructive"
+                            onClick={() =>
+                              handleDelete(
+                                property.id
+                              )
+                            }
+                          >
+
+                            <Trash2 className="size-4" />
+
+                            Eliminar
+
+                          </DropdownMenuItem>
+
+                        </DropdownMenuContent>
+
+                      </DropdownMenu>
+
                     </div>
+
                   </td>
+
                 </tr>
+
               )
             )}
+
           </tbody>
+
         </table>
+
       </div>
+
     </div>
   );
 }

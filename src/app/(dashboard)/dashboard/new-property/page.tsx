@@ -1,9 +1,7 @@
 import { PropertyForm } from "@/components/property/forms/property-form";
 import { PropertyDraftPreview } from "@/components/property/forms/property-draft-preview";
-import { PropertyValidationPreview } from "@/components/property/forms/property-validation-preview";
 import { PropertyAutosaveStatus } from "@/components/property/forms/property-autosave-status";
 import { PropertyFormProvider } from "@/components/providers/property-form-provider";
-import { PropertyPublicationProgress } from "@/components/property/forms/property-publication-progress";
 import { PropertyPublicationTips } from "@/components/property/forms/property-publication-tips";
 import { PropertyPublicationSummary } from "@/components/property/property-publication-summary";
 import { PropertyQualityScore } from "@/components/property/forms/property-quality-score";
@@ -36,11 +34,7 @@ export default function NewPropertyPage() {
               <PropertyPublicationSummary />
           
               <PropertyQualityScore />
-          
-              <PropertyValidationPreview />
-          
-              <PropertyPublicationProgress />
-          
+                              
               <PropertyPublicationTips />
             </div>
           </div>

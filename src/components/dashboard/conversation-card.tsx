@@ -19,44 +19,53 @@ export function ConversationCard({
     ];
 
   return (
-    <div className="rounded-[2rem] border border-border bg-card p-6 transition-all hover:border-primary/40">
+    <div className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30">
 
       <div className="flex items-start justify-between gap-4">
 
-        <div>
+        {/* Left */}
+        <div className="min-w-0 flex-1">
 
           <div className="flex items-center gap-2">
 
-            <User className="size-4 text-primary" />
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <User className="size-4" />
+            </div>
 
-            <h3 className="font-semibold">
-              {
-                conversation.participantName
-              }
-            </h3>
+            <div className="min-w-0">
+
+              <h3 className="truncate font-medium">
+                {
+                  conversation.participantName
+                }
+              </h3>
+
+              <p className="mt-1 line-clamp-2 text-sm leading-6 text-muted-foreground">
+                {lastMessage.message}
+              </p>
+
+            </div>
 
           </div>
 
-          <p className="mt-4 text-sm leading-7 text-muted-foreground">
-            {lastMessage.message}
-          </p>
-
         </div>
 
-        <div className="rounded-full bg-primary/10 p-3 text-primary">
-          <MessageCircle className="size-5" />
+        {/* Icon */}
+        <div className="shrink-0 rounded-xl bg-primary/10 p-2 text-primary">
+          <MessageCircle className="size-4" />
         </div>
 
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
+      {/* Footer */}
+      <div className="mt-4 flex items-center justify-between">
 
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {lastMessage.createdAt}
         </p>
 
-        <button className="rounded-xl border border-border px-4 py-2 text-sm font-medium transition-all hover:bg-muted">
-          Abrir chat
+        <button className="rounded-xl border border-border px-3 py-1.5 text-xs font-medium transition-all hover:bg-muted">
+          Abrir
         </button>
 
       </div>

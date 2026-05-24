@@ -6,12 +6,22 @@ import { useConversations } from "@/hooks/use-conversations";
 
 import { ConversationCard } from "@/components/dashboard/conversation-card";
 
-export function DashboardConversationsSection() {
-  const {
+interface DashboardConversationsSectionProps {
+  limit?: number;
+}
+
+export function DashboardConversationsSection({
+    limit,
+  }: DashboardConversationsSectionProps) {  const {
     conversations,
     loading,
   } =
     useConversations();
+
+  const visibleConversations =
+    limit
+      ? conversations.slice(0, limit)
+      : conversations;
 
   if (loading) {
     return (
@@ -29,6 +39,16 @@ export function DashboardConversationsSection() {
         </h2>
 
         <p className="mt-2 text-muted-foreground">
+          {limit && (
+            <div className="mt-4">
+              <a
+                href="/dashboard/messages"
+                className="text-sm font-medium text-primary transition-all hover:opacity-80"
+              >
+                Ver todos →
+              </a>
+            </div>
+          )}
           Mantén comunicación con posibles arrendatarios.
         </p>
       </div>
@@ -49,7 +69,7 @@ export function DashboardConversationsSection() {
         </div>
       ) : (
         <div className="grid gap-6">
-          {conversations.map((conversation) => (
+          {visibleConversations.map((conversation) => (
             <ConversationCard
               key={conversation.id}
               conversation={conversation}
