@@ -309,6 +309,54 @@ export function PropertyForm({
               />
 
               <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  Tipo de propiedad
+                </label>
+
+                <select
+                  value={draft.type}
+                  onChange={(event) =>
+                    updateDraft({
+                      type: event.target.value,
+                    })
+                  }
+                  className="h-12 w-full rounded-2xl border border-border bg-background px-4 outline-none transition-all focus:border-primary"
+                >
+                  <option value="">
+                    Selecciona un tipo
+                  </option>
+                
+                  <option value="apartment">
+                    Apartamento
+                  </option>
+                
+                  <option value="house">
+                    Casa
+                  </option>
+                
+                  <option value="studio">
+                    Estudio
+                  </option>
+                
+                  <option value="room">
+                    Habitación
+                  </option>
+                
+                  <option value="commercial">
+                    Comercial
+                  </option>
+                
+                  <option value="office">
+                    Oficina
+                  </option>
+                
+                  <option value="land">
+                    Terreno
+                  </option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
 
                 <label className="text-sm font-medium">
                   Descripción
@@ -347,37 +395,73 @@ export function PropertyForm({
         {/* Step 2 */}
         {currentStep === 2 && (
           <section className="rounded-3xl border border-border bg-card p-8">
-
             <div className="mb-8">
-
               <h2 className="font-heading text-2xl font-bold">
                 Características
               </h2>
-
+        
+              <p className="mt-2 text-muted-foreground">
+                Agrega los detalles principales de la propiedad.
+              </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
-
-              <input
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <TextField
+              label="Precio mensual"
+              type="number"
+              min={1}
+              placeholder="2500000"
+              value={draft.monthlyPrice}
+              onChange={(event) =>
+                updateDraft({
+                  monthlyPrice: Number(event.target.value),
+                })
+              }
+              error={errors.monthlyPrice}
+            />
+        
+              <TextField
+                label="Habitaciones"
                 type="number"
-                placeholder="Habitaciones"
-                className="h-12 rounded-2xl border border-border bg-background px-4"
+                min={1}
+                placeholder="3"
+                value={draft.bedrooms}
+                onChange={(event) =>
+                  updateDraft({
+                    bedrooms: Number(event.target.value),
+                  })
+                }
+                error={errors.bedrooms}
               />
 
-              <input
+              <TextField
+                label="Baños"
                 type="number"
-                placeholder="Baños"
-                className="h-12 rounded-2xl border border-border bg-background px-4"
+                min={1}
+                placeholder="2"
+                value={draft.bathrooms}
+                onChange={(event) =>
+                  updateDraft({
+                    bathrooms: Number(event.target.value),
+                  })
+                }
+                error={errors.bathrooms}
               />
 
-              <input
+              <TextField
+                label="Área"
                 type="number"
-                placeholder="Área"
-                className="h-12 rounded-2xl border border-border bg-background px-4"
+                min={1}
+                placeholder="120"
+                value={draft.area}
+                onChange={(event) =>
+                  updateDraft({
+                    area: Number(event.target.value),
+                  })
+                }
+                error={errors.area}
               />
-
             </div>
-
           </section>
         )}
 
@@ -468,6 +552,7 @@ export function PropertyForm({
             
               <PropertyVerificationUpload
                 title="Subir documento de identidad"
+                documentType="identity_document"
               />
             
               <PropertyVerificationCard
@@ -478,6 +563,7 @@ export function PropertyForm({
             
               <PropertyVerificationUpload
                 title="Subir documento de propiedad"
+                documentType="property_title"
               />
             
               <PropertyVerificationCard
@@ -488,6 +574,7 @@ export function PropertyForm({
             
               <PropertyVerificationUpload
                 title="Subir poder legal"
+                documentType="power_of_attorney"
               />
             
             </div>

@@ -13,46 +13,38 @@ interface ActivityCardProps {
 
 const icons = {
   lead: Users,
-
   favorite: Heart,
-
   message: MessageCircle,
-
   verification: ShieldCheck,
 };
 
 export function ActivityCard({
   activity,
 }: ActivityCardProps) {
-
   const Icon =
     icons[activity.type];
 
   return (
-    <div className="flex items-start gap-4 rounded-[2rem] border border-border bg-card p-5 transition-all hover:border-primary/20">
-
-      <div className="rounded-2xl bg-primary/10 p-3 text-primary">
-
-        <Icon className="size-5" />
-
+    <div className="flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/20 hover:shadow-sm">
+      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="size-4" />
       </div>
 
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <h3 className="font-semibold leading-6">
+            {activity.title}
+          </h3>
 
-        <h3 className="font-semibold">
-          {activity.title}
-        </h3>
+          <span className="text-xs text-muted-foreground">
+            {activity.createdAt}
+          </span>
+        </div>
 
-        <p className="mt-2 text-sm leading-7 text-muted-foreground">
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
           {activity.description}
         </p>
-
-        <p className="mt-3 text-xs text-muted-foreground">
-          {activity.createdAt}
-        </p>
-
       </div>
-
     </div>
   );
 }

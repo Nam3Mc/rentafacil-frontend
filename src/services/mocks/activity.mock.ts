@@ -7,7 +7,7 @@ export const activityMock = {
   async getAll():
     Promise<Activity[]> {
 
-    return activities;
-  },
+      return activities as Activity[];
+    },
 
 };

@@ -1,7 +1,5 @@
 "use client";
 
-import { usePropertyInquiries } from "@/hooks/use-property-inquiries";
-
 import {
   Building2,
   Eye,
@@ -9,25 +7,20 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-import {
-  useOwnerProperties,
-} from "@/hooks/use-owner-properties";
+import { usePropertyInquiries } from "@/hooks/use-property-inquiries";
+import { useOwnerProperties } from "@/hooks/use-owner-properties";
 
 export function DashboardStats() {
-
   const { inquiries } =
     usePropertyInquiries();
 
-  const {
-    properties,
-  } =
+  const { properties } =
     useOwnerProperties();
 
   const activeProperties =
     properties.filter(
       (property) =>
-        property.status ===
-        "active"
+        property.status === "active"
     ).length;
 
   const pendingProperties =
@@ -37,10 +30,6 @@ export function DashboardStats() {
         "pending_verification"
     ).length;
 
-  /*
-    Fake analytics
-  */
-
   const totalViews =
     properties.length * 203;
 
@@ -48,118 +37,76 @@ export function DashboardStats() {
     inquiries.length;
 
   const conversionRate =
-    properties.length
-      ? `${Math.min(
-          properties.length * 3,
-          32
+    totalViews > 0
+      ? `${Math.round(
+          (totalLeads / totalViews) * 100
         )}%`
       : "0%";
 
   const stats = [
     {
-      label:
-        "Propiedades activas",
-
-      value:
-        activeProperties,
-
-      icon:
-        Building2,
+      label: "Activas",
+      value: activeProperties,
+      icon: Building2,
+      helper:
+        pendingProperties > 0
+          ? `${pendingProperties} pendientes`
+          : "Publicaciones visibles",
     },
-
     {
-      label:
-        "Visualizaciones",
-
+      label: "Visualizaciones",
       value:
-        totalViews.toLocaleString(
-          "es-CO"
-        ),
-
-      icon:
-        Eye,
+        totalViews.toLocaleString("es-CO"),
+      icon: Eye,
+      helper: "Estimadas este mes",
     },
-
     {
-      label:
-        "Solicitudes",
-
-      value:
-        totalLeads,
-
-      icon:
-        MessageCircle,
+      label: "Solicitudes",
+      value: totalLeads,
+      icon: MessageCircle,
+      helper: "Leads recibidos",
     },
-
     {
-      label:
-        "Conversión",
-
-      value:
-        conversionRate,
-
-      icon:
-        TrendingUp,
+      label: "Conversión",
+      value: conversionRate,
+      icon: TrendingUp,
+      helper: "Solicitudes / vistas",
     },
   ];
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => {
-
         const Icon =
           stat.icon;
 
         return (
           <div
             key={stat.label}
-            className="rounded-[2rem] border border-border bg-card p-6 transition-all hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
+            className="rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
           >
-
-            <div className="flex items-start justify-between">
-
+            <div className="flex items-start justify-between gap-4">
               <div>
-
                 <p className="text-sm text-muted-foreground">
-
                   {stat.label}
-
                 </p>
 
-                <p className="mt-4 text-4xl font-bold tracking-tight">
-
+                <p className="mt-3 text-3xl font-bold tracking-tight">
                   {stat.value}
-
                 </p>
 
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {stat.helper}
+                </p>
               </div>
 
-              <div className="rounded-2xl bg-primary/10 p-3 text-primary">
-
+              <div className="rounded-xl bg-primary/10 p-3 text-primary">
                 <Icon className="size-5" />
-
               </div>
-
             </div>
-
-            {/* Optional secondary info */}
-            {stat.label ===
-              "Propiedades activas" &&
-              pendingProperties > 0 && (
-
-              <p className="mt-4 text-sm text-muted-foreground">
-
-                {pendingProperties} pendientes de validación
-
-              </p>
-
-            )}
-
           </div>
         );
       })}
-
     </div>
   );
 }

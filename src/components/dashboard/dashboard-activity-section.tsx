@@ -1,20 +1,18 @@
 "use client";
 
+import Link from "next/link";
+
 import { useActivities } from "@/hooks/use-activities";
-
 import { ActivityCard } from "@/components/dashboard/activity-card";
-
 
 interface DashboardActivitySectionProps {
   limit?: number;
 }
 
 export function DashboardActivitySection({
-    limit,
-  }: DashboardActivitySectionProps) {
-  const {
-    activities,
-  } =
+  limit,
+}: DashboardActivitySectionProps) {
+  const { activities } =
     useActivities();
 
   const visibleActivities =
@@ -23,43 +21,38 @@ export function DashboardActivitySection({
       : activities;
 
   return (
-    <section className="space-y-8">
-
+    <section className="space-y-6">
       <div>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="font-heading text-2xl font-bold tracking-tight">
+              Actividad reciente
+            </h2>
 
-        <h2 className="font-heading text-3xl font-bold tracking-tight">
-          Actividad reciente
-        </h2>
+            <p className="mt-2 text-muted-foreground">
+              Últimos movimientos dentro de la plataforma.
+            </p>
+          </div>
 
-        <p className="mt-2 text-muted-foreground">
           {limit && (
-            <div className="mt-4">
-              <a
-                href="/dashboard/activity"
-                className="text-sm font-medium text-primary transition-all hover:opacity-80"
-              >
-                Ver toda la actividad →
-              </a>
-            </div>
+            <Link
+              href="/dashboard/activity"
+              className="text-sm font-medium text-primary transition-all hover:opacity-80"
+            >
+              Ver toda →
+            </Link>
           )}
-          Últimos movimientos dentro de la plataforma.
-        </p>
-
+        </div>
       </div>
 
       <div className="space-y-4">
-
-        {visibleActivities.map(
-          (activity) => (
-            <ActivityCard
-              key={activity.id}
-              activity={activity}
-            />
-          )
-        )}
-
+        {visibleActivities.map((activity) => (
+          <ActivityCard
+            key={activity.id}
+            activity={activity}
+          />
+        ))}
       </div>
-
     </section>
   );
 }

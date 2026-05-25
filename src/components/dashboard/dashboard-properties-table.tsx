@@ -58,12 +58,21 @@ export function DashboardPropertiesTable() {
   }
 
   if (isLoading) {
-
     return (
-      <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
-
-        Cargando propiedades...
-
+      <div className="rounded-2xl border border-border bg-card p-8">
+        <div className="space-y-4">
+          <div className="h-6 w-48 animate-pulse rounded-full bg-muted" />
+          <div className="h-4 w-72 animate-pulse rounded-full bg-muted" />
+    
+          <div className="mt-8 space-y-3">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-16 animate-pulse rounded-2xl bg-muted"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

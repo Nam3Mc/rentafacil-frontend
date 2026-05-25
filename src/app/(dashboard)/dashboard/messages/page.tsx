@@ -1,4 +1,4 @@
-import { DashboardConversationsSection } from "@/components/dashboard/dashboard-conversations-section";
+import { DashboardMessagesPanel } from "@/components/dashboard/dashboard-messages-panel";
 
 export default function DashboardMessagesPage() {
   return (
@@ -13,7 +13,7 @@ export default function DashboardMessagesPage() {
         </p>
       </div>
 
-      <DashboardConversationsSection />
+      <DashboardMessagesPanel />
     </section>
   );
 }

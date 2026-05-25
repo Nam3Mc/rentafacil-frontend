@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import { STORAGE_KEYS } from "@/constants/storage";
 
 import { usePropertyPublicationStore } from "@/store/property-publication.store";
 
-let hasHydrated = false;
-
 export function usePropertyDraftPersistence() {
+  const [hasHydrated, setHasHydrated] =
+    useState(false);
+
   const draft =
     usePropertyPublicationStore(
       (state) => state.draft
@@ -19,37 +23,29 @@ export function usePropertyDraftPersistence() {
       (state) => state.updateDraft
     );
 
-  /* Load Draft Once */
   useEffect(() => {
-    if (hasHydrated) {
-      return;
-    }
-
-    hasHydrated = true;
-
     const savedDraft =
       localStorage.getItem(
         STORAGE_KEYS.PROPERTY_DRAFT
       );
 
-    if (!savedDraft) {
-      return;
+    if (savedDraft) {
+      try {
+        const parsedDraft =
+          JSON.parse(savedDraft);
+
+        updateDraft(parsedDraft);
+      } catch (error) {
+        console.error(
+          "Failed to load property draft",
+          error
+        );
+      }
     }
 
-    try {
-      const parsedDraft =
-        JSON.parse(savedDraft);
-
-      updateDraft(parsedDraft);
-    } catch (error) {
-      console.error(
-        "Failed to load property draft",
-        error
-      );
-    }
+    setHasHydrated(true);
   }, [updateDraft]);
 
-  /* Autosave */
   useEffect(() => {
     if (!hasHydrated) {
       return;
@@ -59,5 +55,8 @@ export function usePropertyDraftPersistence() {
       STORAGE_KEYS.PROPERTY_DRAFT,
       JSON.stringify(draft)
     );
-  }, [draft]);
+  }, [
+    draft,
+    hasHydrated,
+  ]);
 }

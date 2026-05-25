@@ -32,12 +32,32 @@ export const usePropertyStore =
 
         addProperty:
           (property) =>
-            set((state) => ({
-              properties: [
-                property,
-                ...state.properties,
-              ],
-            })),
+            set((state) => {
+              const exists =
+                state.properties.some(
+                  (item) =>
+                    item.id === property.id
+                );
+              
+              if (exists) {
+                return {
+                  properties:
+                    state.properties.map(
+                      (item) =>
+                        item.id === property.id
+                          ? property
+                          : item
+                    ),
+                };
+              }
+            
+              return {
+                properties: [
+                  property,
+                  ...state.properties,
+                ],
+              };
+            }),
 
         updateProperty:
           (updatedProperty) =>

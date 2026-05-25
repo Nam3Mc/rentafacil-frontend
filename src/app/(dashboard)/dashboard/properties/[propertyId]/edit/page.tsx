@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 
 import { propertyService } from "@/services/property.service";
+
 import { Container } from "@/components/layout/container";
-
 import { PropertyFormProvider } from "@/components/providers/property-form-provider";
-
 import { PropertyForm } from "@/components/property/forms/property-form";
 
 interface EditPropertyPageProps {
@@ -16,7 +15,6 @@ interface EditPropertyPageProps {
 export default async function EditPropertyPage({
   params,
 }: EditPropertyPageProps) {
-  
   const { propertyId } =
     await params;
 
@@ -33,8 +31,6 @@ export default async function EditPropertyPage({
     <section className="py-12 md:py-16">
       <Container>
         <div className="mx-auto max-w-5xl space-y-8">
-
-          {/* Header */}
           <div>
             <div className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
               Editar propiedad
@@ -49,10 +45,9 @@ export default async function EditPropertyPage({
             </p>
           </div>
 
-          {/* Form */}
           <PropertyFormProvider
             initialValues={property}
-              mode="edit"
+            mode="edit"
           >
             <PropertyForm mode="edit" />
           </PropertyFormProvider>

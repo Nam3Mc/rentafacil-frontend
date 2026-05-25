@@ -1,44 +1,14 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import { Conversation } from "@/types/message.types";
-
-import { conversationService } from "@/services/conversation.service";
+import { useConversationStore } from "@/store/conversation.store";
 
 export function useConversations() {
-
-  const [
-    conversations,
-    setConversations,
-  ] = useState<
-    Conversation[]
-  >([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  useEffect(() => {
-
-    async function load() {
-
-      const data =
-        await conversationService.getConversations();
-
-      setConversations(data);
-
-      setLoading(false);
-    }
-
-    load();
-
-  }, []);
+  const { conversations } =
+    useConversationStore();
 
   return {
     conversations,
-    loading,
+    loading: false,
+    error: null,
   };
 }

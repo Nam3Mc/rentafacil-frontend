@@ -1,61 +1,82 @@
-import { propertyMock } from "@/services/mocks/property.mock";
+import { usePropertyStore } from "@/store/property.store";
+
 import { Property } from "@/types/property.types";
 
 export const propertyService = {
   async getAll() {
-    return propertyMock.getAll();
+    return usePropertyStore
+      .getState()
+      .properties;
   },
 
   async getFeatured() {
-    return propertyMock.getFeatured();
+    return usePropertyStore
+      .getState()
+      .properties.filter(
+        (property) =>
+          property.isFeatured
+      );
   },
 
   async getById(id: string) {
-    return propertyMock.getById(id);
+    return usePropertyStore
+      .getState()
+      .properties.find(
+        (property) =>
+          property.id === id
+      );
   },
 
   async getBySlug(slug: string) {
-    return propertyMock.getBySlug(slug);
+    return usePropertyStore
+      .getState()
+      .properties.find(
+        (property) =>
+          property.slug === slug
+      );
   },
 
   async create(
     property: Property
   ) {
+    usePropertyStore
+      .getState()
+      .addProperty(property);
 
-    return propertyMock.create(
-      property
-    );
+    return property;
   },
 
   async update(
     property: Property
   ) {
+    usePropertyStore
+      .getState()
+      .updateProperty(property);
 
-    return propertyMock.update(
-      property
-    );
+    return property;
   },
 
   async delete(
     propertyId: string
   ) {
+    usePropertyStore
+      .getState()
+      .deleteProperty(
+        propertyId
+      );
 
-    return propertyMock.delete(
-      propertyId
-    );
+    return true;
   },
 
   async getByOwnerId(
     ownerId: string
   ) {
-
-    const properties =
-      await propertyMock.getAll();
-
-    return properties.filter(
-      (property) =>
-        property.ownerId ===
-        ownerId
-    );
+    return usePropertyStore
+      .getState()
+      .properties.filter(
+        (property) =>
+          property.ownerId ===
+          ownerId
+      );
   },
 };

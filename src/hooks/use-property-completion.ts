@@ -14,7 +14,7 @@ const requiredFields = [
   "bathrooms",
   "area",
   "images",
-];
+] as const;
 
 export function usePropertyCompletion() {
   const { draft } =
@@ -25,14 +25,26 @@ export function usePropertyCompletion() {
       return requiredFields.filter(
         (field) => {
           const value =
-            draft[
-              field as keyof typeof draft
-            ];
+            draft[field];
 
           if (
             Array.isArray(value)
           ) {
             return value.length > 0;
+          }
+
+          if (
+            typeof value === "string"
+          ) {
+            return (
+              value.trim().length > 0
+            );
+          }
+
+          if (
+            typeof value === "number"
+          ) {
+            return value > 0;
           }
 
           return Boolean(value);
@@ -48,7 +60,8 @@ export function usePropertyCompletion() {
     );
 
   const isReadyToPublish =
-    completionPercentage === 100;
+    completedFields.length ===
+    requiredFields.length;
 
   return {
     completionPercentage,

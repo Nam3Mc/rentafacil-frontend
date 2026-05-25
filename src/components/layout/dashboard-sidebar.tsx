@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 import { Logo } from "../shared/logo";
+import { useConversationStore } from "@/store/conversation.store";
 
 const guestLinks = [
   {
@@ -110,6 +111,16 @@ export function DashboardSidebar() {
 
   const role =
     user?.role || "guest";
+
+  const { conversations } =
+    useConversationStore();
+
+  const unreadMessagesCount =
+    conversations.reduce(
+      (total, conversation) =>
+        total + (conversation.unreadCount || 0),
+      0
+    );
     
   const links =
     role === "guest"
@@ -164,9 +175,23 @@ export function DashboardSidebar() {
             >
               <Icon className="size-5" />
 
-              <span className="font-medium">
-                {link.label}
-              </span>
+            <span className="flex-1 font-medium">
+              {link.label}
+            </span>
+                        
+            {link.href === "/dashboard/messages" &&
+              unreadMessagesCount > 0 && (
+                <span
+                  className={`flex size-5 items-center justify-center rounded-full text-xs font-semibold ${
+                    isActive
+                      ? "bg-primary-foreground text-primary"
+                      : "bg-primary text-primary-foreground"
+                  }`}
+                >
+                  {unreadMessagesCount}
+                </span>
+              )}
+
             </Link>
           );
         })}
