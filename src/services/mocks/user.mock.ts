@@ -1,6 +1,8 @@
-import users from "@/data/users.json";
+import usersData from "@/data/users.json";
 
 import { User } from "@/types/user.types";
+
+const users = usersData as User[];
 
 export const userMock = {
   async getAll(): Promise<User[]> {

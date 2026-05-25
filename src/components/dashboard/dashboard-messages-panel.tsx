@@ -1,23 +1,15 @@
 "use client";
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import {
-  Send,
-  User,
-} from "lucide-react";
+import { Send, User } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-
 import { useConversations } from "@/hooks/use-conversations";
+import { useActivityStore } from "@/store/activity.store";
 import { useConversationStore } from "@/store/conversation.store";
+import { useNotificationStore } from "@/store/notification.store";
 
 import {
   Conversation,
@@ -25,50 +17,47 @@ import {
 } from "@/types/message.types";
 
 export function DashboardMessagesPanel() {
-  const searchParams =
-    useSearchParams();
+  const { addActivity } = useActivityStore();
 
-  const conversationParam =
-    searchParams.get("conversation");
+  const searchParams = useSearchParams();
 
-  const {
-    addMessage,
-    markAsRead,
-  } =
-    useConversationStore();
+  const conversationParam = searchParams.get("conversation");
 
-  const {
-    conversations,
-    loading,
-  } =
-    useConversations();
+  const { addMessage, markAsRead } = useConversationStore();
 
-  const [selectedId, setSelectedId] =
-    useState<string | null>(null);
+  const { addNotification } = useNotificationStore();
 
-  const [message, setMessage] =
-    useState("");
+  const { conversations, loading } = useConversations();
 
-  const messagesEndRef =
-    useRef<HTMLDivElement | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(
+    conversationParam
+  );
 
-  const selectedConversation =
-    useMemo<Conversation | undefined>(() => {
-      if (selectedId) {
-        return conversations.find(
-          (conversation) =>
-            conversation.id === selectedId
-        );
-      }
+  const [message, setMessage] = useState("");
 
-      return conversations[0];
-    }, [conversations, selectedId]);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (conversationParam) {
-      setSelectedId(conversationParam);
+  const selectedConversation = useMemo<Conversation | undefined>(() => {
+    if (selectedId) {
+      return conversations.find(
+        (conversation) => conversation.id === selectedId
+      );
     }
-  }, [conversationParam]);
+
+    return conversations[0];
+  }, [conversations, selectedId]);
+
+  const sortedConversations = useMemo(() => {
+    return [...conversations].sort((a, b) => {
+      const lastA = a.messages[a.messages.length - 1];
+      const lastB = b.messages[b.messages.length - 1];
+
+      return (
+        new Date(lastB?.createdAt || 0).getTime() -
+        new Date(lastA?.createdAt || 0).getTime()
+      );
+    });
+  }, [conversations]);
 
   useEffect(() => {
     if (!selectedConversation) {
@@ -76,56 +65,56 @@ export function DashboardMessagesPanel() {
     }
 
     markAsRead(selectedConversation.id);
-  }, [
-    selectedConversation?.id,
-    markAsRead,
-  ]);
+  }, [selectedConversation, markAsRead]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
-  }, [
-    selectedConversation?.id,
-    selectedConversation?.messages.length,
-  ]);
+  }, [selectedConversation?.id, selectedConversation?.messages.length]);
 
-  function handleSelectConversation(
-    conversationId: string
-  ) {
+  function handleSelectConversation(conversationId: string) {
     setSelectedId(conversationId);
   }
 
-  function handleSend(
-    event: React.FormEvent
-  ) {
+  function handleSend(event: React.FormEvent) {
     event.preventDefault();
 
-    const trimmedMessage =
-      message.trim();
+    const trimmedMessage = message.trim();
 
-    if (
-      !trimmedMessage ||
-      !selectedConversation
-    ) {
+    if (!trimmedMessage || !selectedConversation) {
       return;
     }
 
-    const newMessage:
-      ConversationMessage = {
+    const timestamp = new Date().toLocaleString("es-CO");
+
+    const newMessage: ConversationMessage = {
       id: `message_${Date.now()}`,
       sender: "owner",
       message: trimmedMessage,
-      createdAt: new Date().toLocaleString(
-        "es-CO"
-      ),
+      createdAt: timestamp,
     };
 
-    addMessage(
-      selectedConversation.id,
-      newMessage
-    );
+    addMessage(selectedConversation.id, newMessage);
+
+    addNotification({
+      id: `notification_${Date.now()}`,
+      type: "message",
+      title: "Mensaje enviado",
+      description: `Respondiste a ${selectedConversation.participantName}.`,
+      href: `/dashboard/messages?conversation=${selectedConversation.id}`,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    });
+
+    addActivity({
+      id: `activity_${Date.now()}`,
+      type: "message",
+      title: "Mensaje enviado",
+      description: `Respondiste a ${selectedConversation.participantName}.`,
+      createdAt: new Date().toISOString(),
+    });
 
     setMessage("");
   }
@@ -138,73 +127,33 @@ export function DashboardMessagesPanel() {
     );
   }
 
-  const sortedConversations =
-    [...conversations].sort(
-      (a, b) => {
-        const lastA =
-          a.messages[
-            a.messages.length - 1
-          ];
-
-        const lastB =
-          b.messages[
-            b.messages.length - 1
-          ];
-
-        return (
-          new Date(
-            lastB?.createdAt || 0
-          ).getTime() -
-          new Date(
-            lastA?.createdAt || 0
-          ).getTime()
-        );
-      }
-    );
-
   return (
     <div className="grid overflow-hidden rounded-2xl border border-border bg-card lg:grid-cols-[320px_1fr]">
       <aside className="border-b border-border lg:border-b-0 lg:border-r">
         <div className="border-b border-border p-5">
-          <h2 className="font-heading text-xl font-bold">
-            Conversaciones
-          </h2>
+          <h2 className="font-heading text-xl font-bold">Conversaciones</h2>
         </div>
 
         <div className="max-h-[640px] overflow-y-auto p-3">
           {sortedConversations.map((conversation) => {
-            const lastMessage =
-              conversation.messages[
-                conversation.messages.length - 1
-              ];
+            const lastMessage = conversation.messages[conversation.messages.length - 1];
 
-            const isActive =
-              selectedConversation?.id ===
-              conversation.id;
+            const isActive = selectedConversation?.id === conversation.id;
 
-            const unreadCount =
-              conversation.unreadCount || 0;
+            const unreadCount = conversation.unreadCount || 0;
 
             return (
               <button
                 key={conversation.id}
                 type="button"
-                onClick={() =>
-                  handleSelectConversation(
-                    conversation.id
-                  )
-                }
+                onClick={() => handleSelectConversation(conversation.id)}
                 className={`w-full rounded-xl p-4 text-left transition-all ${
-                  isActive
-                    ? "bg-primary/10"
-                    : "hover:bg-muted"
+                  isActive ? "bg-primary/10" : "hover:bg-muted"
                 }`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <p className="truncate font-medium">
-                    {
-                      conversation.participantName
-                    }
+                    {conversation.participantName}
                   </p>
 
                   {unreadCount > 0 && (
@@ -215,8 +164,7 @@ export function DashboardMessagesPanel() {
                 </div>
 
                 <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                  {lastMessage?.message ||
-                    "Sin mensajes"}
+                  {lastMessage?.message || "Sin mensajes"}
                 </p>
               </button>
             );
@@ -234,9 +182,7 @@ export function DashboardMessagesPanel() {
 
               <div>
                 <h3 className="font-semibold">
-                  {
-                    selectedConversation.participantName
-                  }
+                  {selectedConversation.participantName}
                 </h3>
 
                 <p className="text-sm text-muted-foreground">
@@ -246,46 +192,38 @@ export function DashboardMessagesPanel() {
             </div>
 
             <div className="flex-1 space-y-4 overflow-y-auto bg-muted/30 p-5">
-              {selectedConversation.messages.map(
-                (chatMessage) => {
-                  const isOwner =
-                    chatMessage.sender ===
-                    "owner";
+              {selectedConversation.messages.map((chatMessage) => {
+                const isOwner = chatMessage.sender === "owner";
 
-                  return (
+                return (
+                  <div
+                    key={chatMessage.id}
+                    className={`flex ${
+                      isOwner ? "justify-end" : "justify-start"
+                    }`}
+                  >
                     <div
-                      key={chatMessage.id}
-                      className={`flex ${
+                      className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-6 ${
                         isOwner
-                          ? "justify-end"
-                          : "justify-start"
+                          ? "bg-primary text-primary-foreground"
+                          : "border border-border bg-card"
                       }`}
                     >
-                      <div
-                        className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-6 ${
+                      <p>{chatMessage.message}</p>
+
+                      <p
+                        className={`mt-2 text-xs ${
                           isOwner
-                            ? "bg-primary text-primary-foreground"
-                            : "border border-border bg-card"
+                            ? "text-primary-foreground/70"
+                            : "text-muted-foreground"
                         }`}
                       >
-                        <p>
-                          {chatMessage.message}
-                        </p>
-
-                        <p
-                          className={`mt-2 text-xs ${
-                            isOwner
-                              ? "text-primary-foreground/70"
-                              : "text-muted-foreground"
-                          }`}
-                        >
-                          {chatMessage.createdAt}
-                        </p>
-                      </div>
+                        {chatMessage.createdAt}
+                      </p>
                     </div>
-                  );
-                }
-              )}
+                  </div>
+                );
+              })}
 
               <div ref={messagesEndRef} />
             </div>
@@ -297,11 +235,7 @@ export function DashboardMessagesPanel() {
               <input
                 type="text"
                 value={message}
-                onChange={(event) =>
-                  setMessage(
-                    event.target.value
-                  )
-                }
+                onChange={(event) => setMessage(event.target.value)}
                 placeholder="Escribe una respuesta..."
                 className="h-12 flex-1 rounded-2xl border border-border bg-background px-4 outline-none transition-all focus:border-primary"
               />

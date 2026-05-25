@@ -1,48 +1,41 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useMemo } from "react";
 
-import { PropertyInquiry } from "@/types/property-inquiry.types";
-import { propertyInquiryService } from "@/services/property-inquiry.service";
 import { useOwnerProperties } from "@/hooks/use-owner-properties";
+import { usePropertyInquiryStore } from "@/store/property-inquiry.store";
 
 export function usePropertyInquiries() {
   const { properties } =
     useOwnerProperties();
 
-  const [
-    inquiries,
-    setInquiries,
-  ] =
-    useState<PropertyInquiry[]>([]);
+  const { inquiries } =
+    usePropertyInquiryStore();
 
-  useEffect(() => {
-    async function load() {
-      const data =
-        await propertyInquiryService.getAll();
-
-      const ownerPropertyIds =
+  const ownerPropertyIds =
+    useMemo(
+      () =>
         properties.map(
           (property) => property.id
-        );
+        ),
+      [properties]
+    );
 
-      const filtered =
-        data.filter((inquiry) =>
+  const ownerInquiries =
+    useMemo(
+      () =>
+        inquiries.filter((inquiry) =>
           ownerPropertyIds.includes(
             inquiry.propertyId
           )
-        );
-
-      setInquiries(filtered);
-    }
-
-    load();
-  }, [properties]);
+        ),
+      [
+        inquiries,
+        ownerPropertyIds,
+      ]
+    );
 
   return {
-    inquiries,
+    inquiries: ownerInquiries,
   };
 }

@@ -1,36 +1,61 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useMemo } from "react";
 
-import { PropertyPerformance } from "@/types/property-performance.types";
-
-import { propertyPerformanceService } from "@/services/property-performance.service";
+import { useOwnerProperties } from "@/hooks/use-owner-properties";
+import { usePropertyInquiries } from "@/hooks/use-property-inquiries";
 
 export function usePropertyPerformances() {
+  const { properties } =
+    useOwnerProperties();
 
-  const [
-    performances,
-    setPerformances,
-  ] = useState<
-    PropertyPerformance[]
-  >([]);
+  const { inquiries } =
+    usePropertyInquiries();
 
-  useEffect(() => {
+  const performances =
+    useMemo(
+      () =>
+        properties.map((property) => {
+          const propertyLeads =
+            inquiries.filter(
+              (inquiry) =>
+                inquiry.propertyId === property.id
+            ).length;
 
-    async function load() {
+          const views =
+            Math.max(
+              120,
+              propertyLeads * 87 +
+                property.title.length * 6
+            );
 
-      const data =
-        await propertyPerformanceService.getAll();
+          const favorites =
+            Math.max(
+              0,
+              Math.round(views * 0.08)
+            );
 
-      setPerformances(data);
-    }
+          const conversionRate =
+            views > 0
+              ? Number(
+                  (
+                    (propertyLeads / views) *
+                    100
+                  ).toFixed(1)
+                )
+              : 0;
 
-    load();
-
-  }, []);
+          return {
+            propertyId: property.id,
+            propertyTitle: property.title,
+            views,
+            leads: propertyLeads,
+            favorites,
+            conversionRate,
+          };
+        }),
+      [properties, inquiries]
+    );
 
   return {
     performances,

@@ -1,19 +1,9 @@
 "use client";
 
 import Image from "next/image";
-
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-
-import {
-  ImagePlus,
-  Star,
-} from "lucide-react";
+import { ImagePlus, Star } from "lucide-react";
 
 import { usePropertyPublicationStore } from "@/store/property-publication.store";
 
@@ -24,86 +14,59 @@ interface UploadedMedia {
   isFeatured: boolean;
 }
 
+function createExistingImages(images?: string[]): UploadedMedia[] {
+  if (!images?.length) {
+    return [];
+  }
+
+  return images.map((image, index) => ({
+    id: `existing_${index}`,
+    file: undefined,
+    preview: image,
+    isFeatured: index === 0,
+  }));
+}
+
 export function PropertyImageUpload() {
-  const [images, setImages] =
-    useState<UploadedMedia[]>([]);
+  const { draft, updateDraft } = usePropertyPublicationStore();
 
-  const {
-    draft,
-    updateDraft,
-  } =
-    usePropertyPublicationStore();
-
-  useEffect(() => {
-    if (
-      images.length === 0 &&
-      draft.images?.length
-    ) {
-      setImages(
-        draft.images.map((image, index) => ({
-          id: `existing_${index}`,
-          file: undefined,
-          preview: image,
-          isFeatured: index === 0,
-        }))
-      );
-    }
-  }, [draft.images, images.length]);
+  const [images, setImages] = useState<UploadedMedia[]>(() =>
+    createExistingImages(draft.images)
+  );
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const newImages =
-        acceptedFiles.map((file, index) => ({
-          id: crypto.randomUUID(),
-          file,
-          preview:
-            URL.createObjectURL(file),
-          isFeatured:
-            images.length === 0 &&
-            index === 0,
-        }));
+      const newImages = acceptedFiles.map((file, index) => ({
+        id: crypto.randomUUID(),
+        file,
+        preview: URL.createObjectURL(file),
+        isFeatured: images.length === 0 && index === 0,
+      }));
 
-      setImages((prev) => [
-        ...prev,
-        ...newImages,
-      ]);
+      setImages((prev) => [...prev, ...newImages]);
     },
     [images.length]
   );
 
-  const {
-    getRootProps,
-    getInputProps,
-  } =
-    useDropzone({
-      accept: {
-        "image/*": [],
-      },
-      multiple: true,
-    });
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      "image/*": [],
+    },
+    multiple: true,
+    onDrop,
+  });
 
   function setFeaturedImage(id: string) {
     setImages((prev) => {
-      const updated =
-        prev.map((image) => ({
-          ...image,
-          isFeatured:
-            image.id === id,
-        }));
+      const updated = prev.map((image) => ({
+        ...image,
+        isFeatured: image.id === id,
+      }));
 
-      const featured =
-        updated.find(
-          (image) => image.id === id
-        );
+      const featured = updated.find((image) => image.id === id);
+      const rest = updated.filter((image) => image.id !== id);
 
-      const rest =
-        updated.filter(
-          (image) => image.id !== id
-        );
-
-      return featured
-        ? [featured, ...rest]
-        : updated;
+      return featured ? [featured, ...rest] : updated;
     });
   }
 
@@ -113,9 +76,7 @@ export function PropertyImageUpload() {
     }
 
     updateDraft({
-      images: images.map(
-        (image) => image.preview
-      ),
+      images: images.map((image) => image.preview),
     });
   }, [images, updateDraft]);
 
@@ -132,9 +93,7 @@ export function PropertyImageUpload() {
             <ImagePlus className="size-7 text-primary" />
           </div>
 
-          <p className="mt-5 font-semibold">
-            Arrastra imágenes aquí
-          </p>
+          <p className="mt-5 font-semibold">Arrastra imágenes aquí</p>
 
           <p className="mt-2 text-sm text-muted-foreground">
             PNG, JPG o WEBP
@@ -162,11 +121,7 @@ export function PropertyImageUpload() {
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-3">
                 <button
                   type="button"
-                  onClick={() =>
-                    setFeaturedImage(
-                      image.id
-                    )
-                  }
+                  onClick={() => setFeaturedImage(image.id)}
                   className={`flex items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition-all ${
                     image.isFeatured
                       ? "bg-primary text-primary-foreground"
@@ -174,10 +129,7 @@ export function PropertyImageUpload() {
                   }`}
                 >
                   <Star className="size-4" />
-
-                  {image.isFeatured
-                    ? "Principal"
-                    : "Principal"}
+                  Principal
                 </button>
               </div>
             </div>

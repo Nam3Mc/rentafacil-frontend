@@ -2,7 +2,6 @@ import {
   Bath,
   BedDouble,
   Building2,
-  MapPin,
   Ruler,
 } from "lucide-react";
 

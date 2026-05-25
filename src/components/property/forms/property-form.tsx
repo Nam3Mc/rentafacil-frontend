@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+
 import { usePropertyDraftPersistence } from "@/hooks/use-property-draft-persistence";
 import { PropertyFormStepper } from "@/components/property/forms/property-form-stepper";
 import { PropertyImageUpload } from "@/components/property/forms/property-image-upload";
@@ -20,7 +21,9 @@ import { PropertyVerificationTimeline } from "@/components/property/forms/proper
 import { PropertyVerificationBenefits } from "@/components/property/forms/property-verification-benefits";
 import { propertyService } from "@/services/property.service";
 import { useAuthStore } from "@/store/auth.store";
-import { Property } from "@/types/property.types";
+import { Property, PropertyType } from "@/types/property.types";
+import { useNotificationStore } from "@/store/notification.store";
+import { useActivityStore } from "@/store/activity.store";
 
 const formSteps: FormStep[] = [
   {
@@ -50,36 +53,41 @@ const formSteps: FormStep[] = [
   },
 ];
 
+const propertyTypes: PropertyType[] = [
+  "apartment",
+  "house",
+  "studio",
+  "room",
+  "commercial",
+  "office",
+  "land",
+];
+
+function getPropertyType(type?: string): PropertyType {
+  if (propertyTypes.includes(type as PropertyType)) {
+    return type as PropertyType;
+  }
+
+  return "apartment";
+}
+
 interface PropertyFormProps {
   mode?: "create" | "edit";
 }
 
-export function PropertyForm({
-  mode = "create",
-}: PropertyFormProps) {
+export function PropertyForm({ mode = "create" }: PropertyFormProps) {
+  const { addNotification } = useNotificationStore();
+  const { addActivity } = useActivityStore();
 
   const router = useRouter();
+  const { user } = useAuthStore();
 
-  const { user } =
-    useAuthStore();
-
-  const {
-    isSubmitting,
-    isSuccess,
-    setSubmitting,
-    setSuccess,
-  } =
+  const { isSubmitting, isSuccess, setSubmitting, setSuccess } =
     usePropertySubmissionStore();
 
-  const [currentStep, setCurrentStep] =
-    useState(1);
+  const [currentStep, setCurrentStep] = useState(1);
 
-  const {
-    draft,
-    updateDraft,
-    resetDraft,
-  } =
-    usePropertyPublicationStore();
+  const { draft, updateDraft, resetDraft } = usePropertyPublicationStore();
 
   const {
     formState: { errors },
@@ -87,174 +95,131 @@ export function PropertyForm({
 
   usePropertyDraftPersistence();
 
-
-  const onSubmit = async (
-    status:
-      "draft" |
-      "pending_verification"
-  ) => {
-  
+  const onSubmit = async (status: "draft" | "pending_verification") => {
     if (!user) {
       return;
     }
-  
+
     try {
-    
       setSubmitting(true);
-    
+
       const newProperty: Property = {
-      
-        id:
-          mode === "edit"
-            ? draft.id || ""
-            : `property_${Date.now()}`,
-      
+        id: mode === "edit" ? draft.id || "" : `property_${Date.now()}`,
+
         slug:
           mode === "edit"
-          ? draft.slug || ""
-              : draft.title
-                  .toLowerCase()
-                  .replaceAll(" ", "-"),
-      
-        title:
-          draft.title,
-      
-        description:
-          draft.description,
-      
-        type:
-          draft.type || "apartment",
-      
+            ? draft.slug || ""
+            : draft.title.toLowerCase().replaceAll(" ", "-"),
+
+        title: draft.title,
+        description: draft.description,
+        type: getPropertyType(draft.type),
         status,
 
-        monthlyPrice:
-          Number(
-            draft.monthlyPrice
-          ),
-        
-        bedrooms:
-          Number(
-            draft.bedrooms
-          ),
-        
-        bathrooms:
-          Number(
-            draft.bathrooms
-          ),
-        
-        area:
-          Number(
-            draft.area
-          ),
-        
-        city:
-          draft.city,
-        
-        state:
-          "Cundinamarca",
-        
-        country:
-          "Colombia",
-        
-        address:
-          draft.address,
-        
+        monthlyPrice: Number(draft.monthlyPrice),
+        bedrooms: Number(draft.bedrooms),
+        bathrooms: Number(draft.bathrooms),
+        area: Number(draft.area),
+
+        city: draft.city,
+        state: "Cundinamarca",
+        country: "Colombia",
+        address: draft.address,
+
         latitude: 0,
-        
         longitude: 0,
-        
-        images:
-          draft.images || [],
-        
-        ownerId:
-          user.id,
-        
-        verificationStatus:
-          "pending_review",
-        
-        verificationDocuments:
-          [],
-        
-        isFeatured:
-          false,
-        
+
+        images: draft.images || [],
+        ownerId: user.id,
+
+        verificationStatus: "pending_review",
+        verificationDocuments: draft.verificationDocuments || [],
+
+        isFeatured: false,
+
         createdAt:
-          new Date().toISOString(),
-        
-        updatedAt:
-          new Date().toISOString(),
+          mode === "edit"
+            ? draft.createdAt || new Date().toISOString()
+            : new Date().toISOString(),
+
+        updatedAt: new Date().toISOString(),
       };
-    
+
       if (mode === "edit") {
-      
-        await propertyService.update(
-          newProperty
-        );
-      
+        await propertyService.update(newProperty);
       } else {
-      
-        await propertyService.create(
-          newProperty
-        );
-      
+        await propertyService.create(newProperty);
       }
-    
+
+      addNotification({
+        id: `notification_${Date.now()}`,
+        type: "property",
+        title:
+          mode === "edit"
+            ? "Propiedad actualizada"
+            : status === "draft"
+              ? "Borrador guardado"
+              : "Propiedad enviada a verificación",
+        description:
+          mode === "edit"
+            ? "Los cambios de la propiedad fueron guardados correctamente."
+            : status === "draft"
+              ? "Tu propiedad fue guardada como borrador."
+              : "Tu propiedad fue enviada para revisión.",
+        href: "/dashboard/properties",
+        isRead: false,
+        createdAt: new Date().toISOString(),
+      });
+
+      addActivity({
+        id: `activity_${Date.now()}`,
+        type: "verification",
+        title:
+          status === "draft"
+            ? "Borrador guardado"
+            : mode === "edit"
+              ? "Propiedad actualizada"
+              : "Propiedad enviada a verificación",
+        description:
+          status === "draft"
+            ? "Guardaste una propiedad como borrador."
+            : mode === "edit"
+              ? "Actualizaste la información de una propiedad."
+              : "Enviaste una propiedad para revisión.",
+        createdAt: new Date().toISOString(),
+      });
+
       setSubmitting(false);
-    
       setSuccess(true);
-    
       resetDraft();
-    
+
       setTimeout(() => {
-      
-        router.push(
-          "/dashboard/properties"
-        );
-      
+        router.push("/dashboard/properties");
       }, 1500);
-    
     } catch (error) {
-    
       console.error(error);
-    
       setSubmitting(false);
-    
     }
-  
   };
 
   if (isSuccess) {
-    return (
-      <PropertyPublicationSuccess />
-    );
+    return <PropertyPublicationSuccess />;
   }
 
   return (
     <div className="space-y-10">
-
-      {/* Stepper */}
-      <PropertyFormStepper
-        steps={formSteps}
-        currentStep={currentStep}
-      />
+      <PropertyFormStepper steps={formSteps} currentStep={currentStep} />
 
       <div className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4">
-        
         <div>
-          <p className="text-sm text-muted-foreground">
-            Paso actual
-          </p>
-        
+          <p className="text-sm text-muted-foreground">Paso actual</p>
           <p className="font-semibold">
             {currentStep} de {formSteps.length}
           </p>
         </div>
-        
+
         <div className="text-right">
-          <p className="text-sm text-muted-foreground">
-            Sección
-          </p>
-        
+          <p className="text-sm text-muted-foreground">Sección</p>
           <p className="font-semibold">
             {formSteps[currentStep - 1]?.title}
           </p>
@@ -264,20 +229,13 @@ export function PropertyForm({
       <form
         onSubmit={(event) => {
           event.preventDefault();
-
-          onSubmit(
-            "pending_verification"
-          );
+          onSubmit("pending_verification");
         }}
         className="space-y-10"
       >
-
-        {/* Step 1 */}
         {currentStep === 1 && (
           <section className="rounded-3xl border border-border bg-card p-8">
-
             <div className="mb-8">
-
               <h2 className="font-heading text-2xl font-bold">
                 Información general
               </h2>
@@ -291,11 +249,9 @@ export function PropertyForm({
                   Modo edición
                 </div>
               )}
-
             </div>
 
             <div className="grid gap-6">
-
               <TextField
                 label="Título"
                 placeholder="Apartamento moderno en Bogotá"
@@ -317,50 +273,24 @@ export function PropertyForm({
                   value={draft.type}
                   onChange={(event) =>
                     updateDraft({
-                      type: event.target.value,
+                      type: getPropertyType(event.target.value),
                     })
                   }
                   className="h-12 w-full rounded-2xl border border-border bg-background px-4 outline-none transition-all focus:border-primary"
                 >
-                  <option value="">
-                    Selecciona un tipo
-                  </option>
-                
-                  <option value="apartment">
-                    Apartamento
-                  </option>
-                
-                  <option value="house">
-                    Casa
-                  </option>
-                
-                  <option value="studio">
-                    Estudio
-                  </option>
-                
-                  <option value="room">
-                    Habitación
-                  </option>
-                
-                  <option value="commercial">
-                    Comercial
-                  </option>
-                
-                  <option value="office">
-                    Oficina
-                  </option>
-                
-                  <option value="land">
-                    Terreno
-                  </option>
+                  <option value="">Selecciona un tipo</option>
+                  <option value="apartment">Apartamento</option>
+                  <option value="house">Casa</option>
+                  <option value="studio">Estudio</option>
+                  <option value="room">Habitación</option>
+                  <option value="commercial">Comercial</option>
+                  <option value="office">Oficina</option>
+                  <option value="land">Terreno</option>
                 </select>
               </div>
 
               <div className="space-y-2">
-
-                <label className="text-sm font-medium">
-                  Descripción
-                </label>
+                <label className="text-sm font-medium">Descripción</label>
 
                 <textarea
                   placeholder="Describe la propiedad..."
@@ -368,8 +298,7 @@ export function PropertyForm({
                   value={draft.description}
                   onChange={(event) =>
                     updateDraft({
-                      description:
-                        event.target.value,
+                      description: event.target.value,
                     })
                   }
                   className={`w-full rounded-2xl border bg-background px-4 py-4 outline-none transition-all ${
@@ -384,46 +313,40 @@ export function PropertyForm({
                     {errors.description.message}
                   </p>
                 )}
-
               </div>
-
             </div>
-
           </section>
         )}
 
-        {/* Step 2 */}
         {currentStep === 2 && (
           <section className="rounded-3xl border border-border bg-card p-8">
             <div className="mb-8">
               <h2 className="font-heading text-2xl font-bold">
                 Características
               </h2>
-        
+
               <p className="mt-2 text-muted-foreground">
                 Agrega los detalles principales de la propiedad.
               </p>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            <TextField
-              label="Precio mensual"
-              type="number"
-              min={1}
-              placeholder="2500000"
-              value={draft.monthlyPrice}
-              onChange={(event) =>
-                updateDraft({
-                  monthlyPrice: Number(event.target.value),
-                })
-              }
-              error={errors.monthlyPrice}
-            />
-        
+              <TextField
+                label="Precio mensual"
+                type="number"
+                placeholder="2500000"
+                value={draft.monthlyPrice}
+                onChange={(event) =>
+                  updateDraft({
+                    monthlyPrice: Number(event.target.value),
+                  })
+                }
+                error={errors.monthlyPrice}
+              />
+
               <TextField
                 label="Habitaciones"
                 type="number"
-                min={1}
                 placeholder="3"
                 value={draft.bedrooms}
                 onChange={(event) =>
@@ -437,7 +360,6 @@ export function PropertyForm({
               <TextField
                 label="Baños"
                 type="number"
-                min={1}
                 placeholder="2"
                 value={draft.bathrooms}
                 onChange={(event) =>
@@ -451,7 +373,6 @@ export function PropertyForm({
               <TextField
                 label="Área"
                 type="number"
-                min={1}
                 placeholder="120"
                 value={draft.area}
                 onChange={(event) =>
@@ -465,20 +386,13 @@ export function PropertyForm({
           </section>
         )}
 
-        {/* Step 3 */}
         {currentStep === 3 && (
           <section className="rounded-3xl border border-border bg-card p-8">
-
             <div className="mb-8">
-
-              <h2 className="font-heading text-2xl font-bold">
-                Ubicación
-              </h2>
-
+              <h2 className="font-heading text-2xl font-bold">Ubicación</h2>
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-
               <TextField
                 label="Ciudad"
                 placeholder="Bogotá"
@@ -497,41 +411,28 @@ export function PropertyForm({
                 value={draft.address}
                 onChange={(event) =>
                   updateDraft({
-                    address:
-                      event.target.value,
+                    address: event.target.value,
                   })
                 }
                 error={errors.address}
               />
-
             </div>
-
           </section>
         )}
 
-        {/* Step 4 */}
         {currentStep === 4 && (
           <section className="rounded-3xl border border-border bg-card p-8">
-
             <div className="mb-8">
-
-              <h2 className="font-heading text-2xl font-bold">
-                Fotografías
-              </h2>
-
+              <h2 className="font-heading text-2xl font-bold">Fotografías</h2>
             </div>
 
             <PropertyImageUpload />
-
           </section>
         )}
 
-        {/* Step 5 */}
         {currentStep === 5 && (
           <section className="rounded-3xl border border-border bg-card p-8">
-
             <div className="mb-8">
-
               <h2 className="font-heading text-2xl font-bold">
                 Verificación
               </h2>
@@ -539,46 +440,42 @@ export function PropertyForm({
               <p className="mt-2 text-muted-foreground">
                 Validaremos la autenticidad de la propiedad antes de publicarla.
               </p>
-
             </div>
 
             <div className="space-y-6">
-                    
               <PropertyVerificationCard
                 title="Documento de identidad"
                 description="Sube un documento oficial del propietario para validar identidad."
                 status="pending"
               />
-            
+
               <PropertyVerificationUpload
                 title="Subir documento de identidad"
                 documentType="identity_document"
               />
-            
+
               <PropertyVerificationCard
                 title="Documento de pertenencia"
                 description="Recibo público, escritura o documento legal que demuestre propiedad."
                 status="unverified"
               />
-            
+
               <PropertyVerificationUpload
                 title="Subir documento de propiedad"
                 documentType="property_title"
               />
-            
+
               <PropertyVerificationCard
                 title="Poder legal (opcional)"
                 description="Requerido si la propiedad es administrada por un tercero."
                 status="unverified"
               />
-            
+
               <PropertyVerificationUpload
                 title="Subir poder legal"
                 documentType="power_of_attorney"
               />
-            
             </div>
-
           </section>
         )}
 
@@ -590,43 +487,30 @@ export function PropertyForm({
           <PropertyVerificationBenefits />
         </div>
 
-        {/* Actions */}
         <div className="flex flex-col gap-4 pt-6">
-
-          {/* Navigation */}
           <div className="flex items-center justify-between">
-
             <Button
               type="button"
               variant="outline"
               size="lg"
               disabled={currentStep === 1}
-              onClick={() =>
-                setCurrentStep(
-                  (prev) => prev - 1
-                )
-              }
+              onClick={() => setCurrentStep((prev) => prev - 1)}
               className="h-14 rounded-2xl px-8"
             >
               Anterior
             </Button>
-            
+
             {currentStep < formSteps.length ? (
               <Button
                 type="button"
                 size="lg"
-                onClick={() =>
-                  setCurrentStep(
-                    (prev) => prev + 1
-                  )
-                }
+                onClick={() => setCurrentStep((prev) => prev + 1)}
                 className="h-14 rounded-2xl px-8"
               >
                 Continuar
               </Button>
             ) : (
               <div className="flex flex-col-reverse gap-4 sm:flex-row">
-              
                 {mode === "edit" && (
                   <Link
                     href="/dashboard/properties"
@@ -642,14 +526,10 @@ export function PropertyForm({
                     variant="outline"
                     size="lg"
                     disabled={isSubmitting}
-                    onClick={() =>
-                      onSubmit("draft")
-                    }
+                    onClick={() => onSubmit("draft")}
                     className="h-14 rounded-2xl px-8"
                   >
-                  
                     Guardar borrador
-                  
                   </Button>
                 )}
 
@@ -659,11 +539,9 @@ export function PropertyForm({
                   disabled={isSubmitting}
                   className="h-14 rounded-2xl px-8"
                 >
-                
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
                       <Loader2 className="size-4 animate-spin" />
-                  
                       Procesando...
                     </div>
                   ) : isSuccess ? (
@@ -673,18 +551,12 @@ export function PropertyForm({
                   ) : (
                     "Publicar propiedad"
                   )}
-
                 </Button>
-                
               </div>
             )}
-
           </div>
-          
         </div>
-
       </form>
-
     </div>
   );
 }

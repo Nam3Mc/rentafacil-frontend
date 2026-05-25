@@ -1,8 +1,33 @@
-import { User, Bell, ShieldCheck } from "lucide-react";
+import {
+  Bell,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+
+const settings = [
+  {
+    title: "Perfil",
+    description:
+      "Actualiza tu información personal y datos de contacto.",
+    icon: User,
+  },
+  {
+    title: "Notificaciones",
+    description:
+      "Configura alertas sobre leads, mensajes y propiedades.",
+    icon: Bell,
+  },
+  {
+    title: "Seguridad",
+    description:
+      "Gestiona protección de cuenta y validaciones de acceso.",
+    icon: ShieldCheck,
+  },
+];
 
 export default function DashboardSettingsPage() {
   return (
-    <section className="space-y-10">
+    <section className="space-y-8">
       <div>
         <h1 className="font-heading text-4xl font-bold tracking-tight">
           Configuración
@@ -13,42 +38,29 @@ export default function DashboardSettingsPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="rounded-[2rem] border border-border bg-card p-6">
-          <User className="size-6 text-primary" />
+      <div className="grid gap-4 lg:grid-cols-3">
+        {settings.map((item) => {
+          const Icon = item.icon;
 
-          <h2 className="mt-5 font-heading text-xl font-bold">
-            Perfil
-          </h2>
+          return (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-border bg-card p-6 transition-all hover:border-primary/20 hover:shadow-sm"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Icon className="size-5" />
+              </div>
 
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Actualiza tu información personal y datos de contacto.
-          </p>
-        </div>
+              <h2 className="mt-5 font-heading text-lg font-bold">
+                {item.title}
+              </h2>
 
-        <div className="rounded-[2rem] border border-border bg-card p-6">
-          <Bell className="size-6 text-primary" />
-
-          <h2 className="mt-5 font-heading text-xl font-bold">
-            Notificaciones
-          </h2>
-
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Configura alertas sobre leads, mensajes y propiedades.
-          </p>
-        </div>
-
-        <div className="rounded-[2rem] border border-border bg-card p-6">
-          <ShieldCheck className="size-6 text-primary" />
-
-          <h2 className="mt-5 font-heading text-xl font-bold">
-            Seguridad
-          </h2>
-
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Gestiona protección de cuenta y validaciones de acceso.
-          </p>
-        </div>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {item.description}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

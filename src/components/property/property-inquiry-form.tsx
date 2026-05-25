@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { propertyInquiryService } from "@/services/property-inquiry.service";
+import { useActivityStore } from "@/store/activity.store";
 import {
   CheckCircle2,
   Loader2,
@@ -10,13 +10,29 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { propertyInquiryService } from "@/services/property-inquiry.service";
+
+import { useConversationStore } from "@/store/conversation.store";
+import { useNotificationStore } from "@/store/notification.store";
+
 interface PropertyInquiryFormProps {
   propertyId: string;
 }
 
 export function PropertyInquiryForm({
   propertyId,
-}: PropertyInquiryFormProps) {  const [loading, setLoading] =
+}: PropertyInquiryFormProps) {
+
+  const { addActivity } =
+    useActivityStore();
+
+  const { createConversation } =
+    useConversationStore();
+
+  const { addNotification } =
+    useNotificationStore();
+
+  const [loading, setLoading] =
     useState(false);
 
   const [success, setSuccess] =
@@ -31,32 +47,87 @@ export function PropertyInquiryForm({
         "Hola, estoy interesado en esta propiedad. Me gustaría recibir más información.",
     });
 
-  const onSubmit = async (
+  async function onSubmit(
     event: React.FormEvent
-  ) => {
+  ) {
     event.preventDefault();
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    await new Promise((resolve) =>
-      setTimeout(resolve, 1200)
-    );
+      const timestamp =
+        Date.now();
 
-    setLoading(false);
-    await propertyInquiryService.create({
-      id: `inquiry_${Date.now()}`,
-      propertyId,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      message: formData.message,
-      createdAt: new Date().toISOString(),
-    });
-    setSuccess(true);
-  };
+      const inquiryId =
+        `inquiry_${timestamp}`;
+
+      const conversationId =
+        `conversation_${timestamp}`;
+
+      const messageId =
+        `message_${timestamp}`;
+
+      const createdAt =
+        new Date().toISOString();
+
+      await propertyInquiryService.create({
+        id: inquiryId,
+        propertyId,
+        conversationId,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        status: "new",
+        createdAt,
+      });
+
+      createConversation({
+        id: conversationId,
+        propertyId,
+        participantName: formData.name,
+        unreadCount: 1,
+        messages: [
+          {
+            id: messageId,
+            sender: "renter",
+            message: formData.message,
+            createdAt:
+              new Date().toLocaleString(
+                "es-CO"
+              ),
+          },
+        ],
+      });
+
+      addNotification({
+        id: `notification_${timestamp}`,
+        type: "lead",
+        title: "Nuevo lead recibido",
+        description: `${formData.name} está interesado en una propiedad.`,
+        href: "/dashboard/leads",
+        isRead: false,
+        createdAt,
+      });
+
+      addActivity({
+        id: `activity_${timestamp}`,
+        type: "lead",
+        title: "Nuevo lead recibido",
+        description: `${formData.name} mostró interés en una propiedad.`,
+        createdAt,
+      });
+
+      setSuccess(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="rounded-[2rem] border border-border bg-card p-8 shadow-xl shadow-primary/5">
+    <div className="rounded-2xl border border-border bg-card p-8 shadow-xl shadow-primary/5">
       <div>
         <div className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
           Lead directo

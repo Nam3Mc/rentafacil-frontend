@@ -9,7 +9,7 @@ export function CTAButton({
 }: CTAButtonProps) {
   return (
     <Button
-      variant="premium"
+      variant="default"
       size="lg"
       className="rounded-2xl"
     >

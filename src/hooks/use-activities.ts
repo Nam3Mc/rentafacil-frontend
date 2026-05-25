@@ -1,58 +1,14 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import { Activity } from "@/types/activity.types";
-
-import { activityService } from "@/services/activity.service";
+import { useActivityStore } from "@/store/activity.store";
 
 export function useActivities() {
-  const [
-    activities,
-    setActivities,
-  ] = useState<Activity[]>([]);
-
-  const [
-    isLoading,
-    setIsLoading,
-  ] = useState(true);
-
-  const [
-    error,
-    setError,
-  ] = useState<string | null>(
-    null
-  );
-
-  useEffect(() => {
-    async function load() {
-      try {
-        setIsLoading(true);
-
-        const data =
-          await activityService.getAll();
-
-        setActivities(data);
-      } catch (error) {
-        console.error(error);
-
-        setError(
-          "No se pudo cargar la actividad."
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    load();
-  }, []);
+  const { activities } =
+    useActivityStore();
 
   return {
     activities,
-    isLoading,
-    error,
+    isLoading: false,
+    error: null,
   };
 }

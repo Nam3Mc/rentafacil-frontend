@@ -1,59 +1,23 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-import {
-  useRouter,
-} from "next/navigation";
-
-import {
-  useAuthStore,
-} from "@/store/auth.store";
+import { useAuthStore } from "@/store/auth.store";
 
 export function useAuthGuard() {
+  const router = useRouter();
 
-  const router =
-    useRouter();
-
-  const { user } =
-    useAuthStore();
-
-  const [
-    isHydrated,
-    setIsHydrated,
-  ] =
-    useState(false);
+  const { user } = useAuthStore();
 
   useEffect(() => {
-
-    setIsHydrated(true);
-
-  }, []);
-
-  useEffect(() => {
-
-    if (
-      isHydrated &&
-      !user
-    ) {
-
-      router.push(
-        "/login"
-      );
-
+    if (!user) {
+      router.push("/login");
     }
-
-  }, [
-    user,
-    router,
-    isHydrated,
-  ]);
+  }, [user, router]);
 
   return {
     user,
-    isHydrated,
+    isHydrated: true,
   };
 }

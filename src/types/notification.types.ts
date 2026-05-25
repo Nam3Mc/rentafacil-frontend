@@ -1,19 +1,21 @@
 export type NotificationType =
   | "lead"
   | "message"
-  | "favorite"
-  | "system";
+  | "property"
+  | "verification";
 
 export interface Notification {
   id: string;
+
+  type: NotificationType;
 
   title: string;
 
   description: string;
 
-  type: NotificationType;
+  href?: string;
 
-  read: boolean;
+  isRead: boolean;
 
   createdAt: string;
 }

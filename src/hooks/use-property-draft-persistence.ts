@@ -1,38 +1,29 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useRef } from "react";
 
 import { STORAGE_KEYS } from "@/constants/storage";
-
 import { usePropertyPublicationStore } from "@/store/property-publication.store";
 
 export function usePropertyDraftPersistence() {
-  const [hasHydrated, setHasHydrated] =
-    useState(false);
+  const hasHydratedRef = useRef(false);
 
-  const draft =
-    usePropertyPublicationStore(
-      (state) => state.draft
-    );
+  const draft = usePropertyPublicationStore(
+    (state) => state.draft
+  );
 
-  const updateDraft =
-    usePropertyPublicationStore(
-      (state) => state.updateDraft
-    );
+  const updateDraft = usePropertyPublicationStore(
+    (state) => state.updateDraft
+  );
 
   useEffect(() => {
-    const savedDraft =
-      localStorage.getItem(
-        STORAGE_KEYS.PROPERTY_DRAFT
-      );
+    const savedDraft = localStorage.getItem(
+      STORAGE_KEYS.PROPERTY_DRAFT
+    );
 
     if (savedDraft) {
       try {
-        const parsedDraft =
-          JSON.parse(savedDraft);
+        const parsedDraft = JSON.parse(savedDraft);
 
         updateDraft(parsedDraft);
       } catch (error) {
@@ -43,11 +34,11 @@ export function usePropertyDraftPersistence() {
       }
     }
 
-    setHasHydrated(true);
+    hasHydratedRef.current = true;
   }, [updateDraft]);
 
   useEffect(() => {
-    if (!hasHydrated) {
+    if (!hasHydratedRef.current) {
       return;
     }
 
@@ -55,8 +46,5 @@ export function usePropertyDraftPersistence() {
       STORAGE_KEYS.PROPERTY_DRAFT,
       JSON.stringify(draft)
     );
-  }, [
-    draft,
-    hasHydrated,
-  ]);
+  }, [draft]);
 }

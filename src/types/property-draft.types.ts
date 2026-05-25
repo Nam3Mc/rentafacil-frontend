@@ -31,4 +31,6 @@ export interface PropertyDraft {
   images: string[];
 
   verificationDocuments: PropertyVerificationDocument[];
+
+  createdAt?: string
 }

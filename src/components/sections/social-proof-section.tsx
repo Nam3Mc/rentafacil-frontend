@@ -90,7 +90,7 @@ export function SocialProofSection() {
 
                 {/* Content */}
                 <p className="mt-6 leading-8 text-muted-foreground">
-                  "{testimonial.content}"
+                  &ldquo;{testimonial.content}&rdquo;
                 </p>
 
                 {/* User */}

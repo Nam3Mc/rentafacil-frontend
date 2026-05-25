@@ -17,6 +17,10 @@ interface ConversationStore {
     message: ConversationMessage
   ) => void;
 
+  createConversation: (
+    conversation: Conversation
+  ) => void;
+
   markAsRead: (
     conversationId: string
   ) => void;
@@ -38,6 +42,28 @@ export const useConversationStore =
         ) =>
           set({
             conversations,
+          }),
+
+        createConversation: (
+          conversation
+        ) =>
+          set((state) => {
+            const exists =
+              state.conversations.some(
+                (item) =>
+                  item.id === conversation.id
+              );
+
+            if (exists) {
+              return state;
+            }
+
+            return {
+              conversations: [
+                conversation,
+                ...state.conversations,
+              ],
+            };
           }),
 
         addMessage: (

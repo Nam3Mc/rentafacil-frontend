@@ -21,7 +21,7 @@ export function PropertyPerformanceCard({
       <div className="mb-6">
 
         <h3 className="font-heading text-xl font-bold tracking-tight">
-          Rendimiento
+          {performance.propertyTitle || "Rendimiento"}
         </h3>
 
         <p className="mt-2 text-sm text-muted-foreground">
